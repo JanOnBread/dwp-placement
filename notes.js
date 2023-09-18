@@ -14,7 +14,9 @@ app.listen(port, () => {
 const mongoose = require("mongoose");
 
 const dataBaseLoc =
-  "mongodb+srv://jcheung801:k1IDMrTBzqHGsLeY@cluster0.3wjqms8.mongodb.net/Placement?retryWrites=true&w=majority";
+  //"mongodb+srv://jcheung801:k1IDMrTBzqHGsLeY@cluster0.3wjqms8.mongodb.net/Placement?retryWrites=true&w=majority";
+  //afyRjrtKZbmaz5N5
+  "mongodb+srv://jcheung801:afyRjrtKZbmaz5N5@cluster0.3wjqms8.mongodb.net/Placement?retryWrites=true&w=majority";
 
 mongoose
   .connect(dataBaseLoc, {
@@ -49,6 +51,20 @@ app.get("/store", async (req, res) => {
     return res
       .status(500)
       .send("An error has occured - Database can't be shown");
+  }
+});
+
+// GET BY ID: /store/[id] returns on that id entry
+app.get("/store/:_id", async (req, res) => {
+  const noteById = await Note.findById(req.params).exec();
+  console.log(req.params);
+  console.log(Note.count < req.params);
+  console.log(Note.count);
+  // retuns en though that id note may not exist. ...?
+  try {
+    return res.send(noteById);
+  } catch (error) {
+    return res.status(500).send("");
   }
 });
 
