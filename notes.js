@@ -57,13 +57,12 @@ app.get("/store", async (req, res) => {
 app.get("/store/:_id", async (req, res) => {
   const noteById = await Note.findById(req.params).exec();
   console.log(req.params);
-  console.log(Note.count < req.params);
-  console.log(Note.count);
-  // But returns a note with an id that doesn't exist (no error message)
-  try {
+  console.log(noteById);
+
+  if (noteById === null) {
+    return res.status(400).send("There is no entry with this id ( ＞Д＜ )ゝ ");
+  } else {
     return res.send(noteById);
-  } catch (error) {
-    return res.status(500).send("");
   }
 });
 
