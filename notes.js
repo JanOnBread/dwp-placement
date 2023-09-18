@@ -14,8 +14,6 @@ app.listen(port, () => {
 const mongoose = require("mongoose");
 
 const dataBaseLoc =
-  //"mongodb+srv://jcheung801:k1IDMrTBzqHGsLeY@cluster0.3wjqms8.mongodb.net/Placement?retryWrites=true&w=majority";
-  //afyRjrtKZbmaz5N5
   "mongodb+srv://jcheung801:afyRjrtKZbmaz5N5@cluster0.3wjqms8.mongodb.net/Placement?retryWrites=true&w=majority";
 
 mongoose
