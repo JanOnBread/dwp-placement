@@ -14,7 +14,8 @@ app.listen(port, () => {
 const mongoose = require("mongoose");
 
 const dataBaseLoc =
-  "mongodb+srv://jcheung801:afyRjrtKZbmaz5N5@cluster0.3wjqms8.mongodb.net/Placement?retryWrites=true&w=majority";
+  "mongodb+srv://janet:CF49WrEQOsdJ3ukN@janet-notes.mspqjdv.mongodb.net/?retryWrites=true&w=majority";
+//Local "mongodb+srv://jcheung801:afyRjrtKZbmaz5N5@cluster0.3wjqms8.mongodb.net/Placement?retryWrites=true&w=majority";
 
 mongoose
   .connect(dataBaseLoc, {
@@ -58,7 +59,7 @@ app.get("/store/:_id", async (req, res) => {
   console.log(req.params);
   console.log(Note.count < req.params);
   console.log(Note.count);
-  // retuns en though that id note may not exist. ...?
+  // But returns a note with an id that doesn't exist (no error message)
   try {
     return res.send(noteById);
   } catch (error) {
