@@ -14,7 +14,7 @@ app.listen(port, () => {
 const mongoose = require("mongoose");
 
 const dataBaseLoc =
-  "mongodb+srv://janet:CF49WrEQOsdJ3ukN@janet-notes.mspqjdv.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb+srv://janet:CF49WrEQOsdJ3ukN@janet-notes.mspqjdv.mongodb.net/placement?retryWrites=true&w=majority";
 //Local "mongodb+srv://jcheung801:afyRjrtKZbmaz5N5@cluster0.3wjqms8.mongodb.net/Placement?retryWrites=true&w=majority";
 
 mongoose
@@ -49,20 +49,32 @@ app.get("/store", async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .send("An error has occured - Database can't be shown");
+      .send("An error has occured - Database can't be shown (⋟﹏⋞)");
   }
 });
 
 // GET BY ID: /store/[id] returns on that id entry
 app.get("/store/:_id", async (req, res) => {
   const noteById = await Note.findById(req.params).exec();
-  console.log(req.params);
-  console.log(noteById);
 
   if (noteById === null) {
-    return res.status(400).send("There is no entry with this id ( ＞Д＜ )ゝ ");
+    return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
   } else {
     return res.send(noteById);
+  }
+});
+
+// DELETE BY ID: /store/[id] deleted that id entry
+app.delete("/store/:_id", async (req, res) => {
+  const noteById = await Note.findById(req.params).exec();
+
+  if (noteById === null) {
+    return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
+  } else {
+    await Note.findByIdAndRemove(req.params).exec();
+    return res
+      .status(200)
+      .send("this note has been deleted successfully deleted ٩(`･ω･´)و ");
   }
 });
 
@@ -84,16 +96,20 @@ app.post("/notes", async (req, res) => {
     req.body.dayName === undefined ||
     req.body.notes === undefined
   ) {
-    return res.status(400).send("A field is empty so a note was not sent ;( ");
+    return res
+      .status(400)
+      .send("A field is empty so a note was not sent (つ﹏<。)");
   }
 
   // Saving our new note
   try {
     await document.save();
     console.log("document saved to db");
-    return res.status(201).send("You have added a new note :)");
+    return res.status(201).send("You have added a new note ( ´∀｀)b");
   } catch (error) {
-    return res.status(500).send("A note was not sent :(");
+    return res
+      .status(500)
+      .send("An error occured so a note was not posted ( ఠ్ఠᗣఠ్ఠ )");
   }
 });
 
