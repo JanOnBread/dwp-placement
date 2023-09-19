@@ -35,7 +35,7 @@ const noteSchema = {
   _id: Number,
   date: String, // ie 13/9/2023
   dayName: String, // Wednesday
-  notes: String,
+  notes: String, // "Today I learnt that ....."
 };
 const Note = mongoose.model("Note", noteSchema);
 
@@ -80,27 +80,25 @@ app.delete("/store/:_id", async (req, res) => {
 
 // defining POST : adds a new note
 app.post("/notes", async (req, res) => {
-  const count = await Note.count({});
-  const id = count + 1;
+  const maxSchemas = await Note.findOne().sort({ _id: -1 }).exec();
+  const count = maxSchemas._id;
 
+  const id = count + 1;
+  const date = String(new Date());
+
+  // Schemas
   const document = new Note({
     _id: id,
-    date: req.body.date,
-    dayName: req.body.dayName,
+    date: date,
     notes: req.body.notes,
   });
 
   // return an error is a field is empty
-  if (
-    req.body.date === undefined ||
-    req.body.dayName === undefined ||
-    req.body.notes === undefined
-  ) {
+  if (req.body.notes === undefined) {
     return res
       .status(400)
-      .send("A field is empty so a note was not sent (つ﹏<。)");
+      .send("The note field is empty so a note was not sent (つ﹏<。)");
   }
-
   // Saving our new note
   try {
     await document.save();
