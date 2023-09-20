@@ -103,6 +103,20 @@ app.delete("/notes/:_id", async (req, res) => {
       .send("this note has been deleted successfully deleted ٩(`･ω･´)و ");
   }
 });
+// ------------------------------------------------------------
+
+// DELETE ALL: /delete/all deleted all notes
+
+app.delete("/notes/", async (req, res) => {
+  try {
+    await Note.deleteMany({});
+    return res.send("All notes have been deleted ٩(`･ω･´)و ");
+  } catch (error) {
+    return res
+      .status(500)
+      .send("An error has occured - all notes where note delated (⋟﹏⋞)");
+  }
+});
 
 // ------------------------------------------------------------
 
