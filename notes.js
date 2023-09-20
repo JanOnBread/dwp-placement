@@ -41,7 +41,7 @@ const Note = mongoose.model("Note", noteSchema);
 
 //=======================================================
 
-// defining GET : will show us all current items in our database
+//  GET : will show us all current items in our database
 app.get("/store", async (req, res) => {
   const allNotes = await Note.find({});
   try {
@@ -52,6 +52,8 @@ app.get("/store", async (req, res) => {
       .send("An error has occured - Database can't be shown (⋟﹏⋞)");
   }
 });
+
+// --------------------------------------------------
 
 // GET BY ID: /store/[id] returns on that id entry
 app.get("/store/:_id", async (req, res) => {
@@ -64,8 +66,9 @@ app.get("/store/:_id", async (req, res) => {
   }
 });
 
-// DELETE BY ID: /store/[id] deleted that id entry
-app.delete("/store/:_id", async (req, res) => {
+// --------------------------------------------------
+// DELETE BY ID: /delete/[id] deleted that id entry
+app.delete("/delete/:_id", async (req, res) => {
   const noteById = await Note.findById(req.params).exec();
 
   if (noteById === null) {
@@ -78,7 +81,8 @@ app.delete("/store/:_id", async (req, res) => {
   }
 });
 
-// defining POST : adds a new note
+// --------------------------------------------------
+//  POST : adds a new note
 app.post("/notes", async (req, res) => {
   const maxSchemas = await Note.findOne().sort({ _id: -1 }).exec();
   const count = maxSchemas._id;
@@ -111,31 +115,19 @@ app.post("/notes", async (req, res) => {
   }
 });
 
-//=========================================
+// --------------------------------------------------
+// UPDATE BY ID: /update/[id] changes the note for that entry
+app.patch("/update/:_id/:notes", async (req, res) => {
+  //let newNote = prompt("Please enter your new notes", "New note");
 
-// // testing by adding one note
-// const Note = mongoose.model("Note", noteSchema);
-// const newNote = new Note({
-//     date: "13/9/2023",
-//     dayName: "Wednesday" ,
-//     notes: "Test note",
-// });
-// newNote.save()
-// .then(() => {
-//     console.log('Save User at MongoDB');
-//   })
-//   .catch((error) => {
-//     console.error(error);
-// });;
+  const noteById = await Note.findById(req.params._id).exec();
 
-// app.get("/store", (req, res) => {
-//   const testNote = new Note({
-//     date: "13/9/2023",
-//     dayName: "Wednesday",
-//     notes: "Test notes",
-//   });
-//   testNote.save();
-
-//   return res.send("added a note :)");
-//   //   const notes = await Note.find();
-// });
+  if (noteById === null) {
+    return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
+  } else {
+    await Note.findByIdAndUpdate(req.params._id, { notes: req.params.notes });
+    return res
+      .status(200)
+      .send("this note has been updated successfully ٩(`･ω･´)و ");
+  }
+});
