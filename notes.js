@@ -8,7 +8,8 @@ const url = "http://localhost:" + port;
 app.listen(port, () => {
   console.log("The server is running at " + url);
 });
-//==================================================
+
+//==========================================================
 
 // Setting up MongoDB (our Database)
 const mongoose = require("mongoose");
@@ -30,18 +31,18 @@ mongoose
     console.error(error);
   });
 
-// defining a Schemea
+// Defining a Schemea
 const noteSchema = {
-  _id: Number,
-  date: String, // ie 13/9/2023
-  dayName: String, // Wednesday
-  notes: String, // "Today I learnt that ....."
+  _id: Number, // auto-generated
+  date: String, // auto-generated
+  notes: String, // custom inputed (body),"Today I learnt that ..."
 };
 const Note = mongoose.model("Note", noteSchema);
 
-//=======================================================
+//=============================================================
 
-//  GET : will show us all current items in our database
+//  GET : will show us all current notes in our database
+
 app.get("/notes", async (req, res) => {
   try {
     allNotes = await Note.find({});
@@ -53,8 +54,9 @@ app.get("/notes", async (req, res) => {
   }
 });
 
-// --------------------------------------------------
-// GET BY ID: /store/[id] returns on that id entry
+// ------------------------------------------------------------
+
+// GET BY ID: /store/[id] returns based on id
 
 function checkNoteById(res, id) {
   // adding a try catch to test Note.findById
@@ -84,8 +86,10 @@ app.get("/notes/:_id", async (req, res) => {
   }
 });
 
-// --------------------------------------------------
+// ------------------------------------------------------------
+
 // DELETE BY ID: /delete/[id] deleted that id entry
+
 app.delete("/notes/:_id", async (req, res) => {
   //const noteById = await Note.findById(req.params).exec();
   const noteById = await checkNoteById(res, req.params._id);
@@ -100,32 +104,36 @@ app.delete("/notes/:_id", async (req, res) => {
   }
 });
 
-// --------------------------------------------------
-//  POST : adds a new note
-app.post("/notes", async (req, res) => {
-  const maxSchemas = await Note.findOne().sort({ _id: -1 }).exec();
-  const count = maxSchemas._id;
+// ------------------------------------------------------------
 
-  const id = count + 1;
+//  POST : adds a new note
+
+app.post("/notes", async (req, res) => {
+  //generating new id
+  const maxSchemas = await Note.findOne().sort({ _id: -1 }).exec();
+  const id = maxSchemas._id;
+  +1;
+
+  // getting current data and time
   const date = String(new Date());
 
-  // Schemas
+  // Defining Schemas
   const document = new Note({
     _id: id,
     date: date,
     notes: req.body.notes,
   });
 
-  // return an error is a field is empty
+  // return an error if the note field is empty
   if (req.body.notes === undefined) {
     return res
       .status(400)
       .send("The note field is empty so a note was not sent (つ﹏<。)");
   }
-  // Saving our new note
+
+  // Saving our new note into our database
   try {
     await document.save();
-    console.log("document saved to db");
     return res.status(201).send("You have added a new note ( ´∀｀)b");
   } catch (error) {
     return res
@@ -134,7 +142,8 @@ app.post("/notes", async (req, res) => {
   }
 });
 
-// --------------------------------------------------
+// ------------------------------------------------------------
+
 // UPDATE BY ID: /update/[id] changes the note for that entry
 
 app.patch("/notes/:_id/", async (req, res) => {
