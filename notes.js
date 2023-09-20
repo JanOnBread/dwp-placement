@@ -42,9 +42,9 @@ const Note = mongoose.model("Note", noteSchema);
 //=======================================================
 
 //  GET : will show us all current items in our database
-app.get("/store", async (req, res) => {
-  const allNotes = await Note.find({});
+app.get("/notes", async (req, res) => {
   try {
+    allNotes = await Note.find({});
     return res.send(allNotes);
   } catch (error) {
     return res
@@ -54,10 +54,28 @@ app.get("/store", async (req, res) => {
 });
 
 // --------------------------------------------------
-
 // GET BY ID: /store/[id] returns on that id entry
-app.get("/store/:_id", async (req, res) => {
-  const noteById = await Note.findById(req.params).exec();
+
+async function checkNoteById(res, id) {
+  // adding a try catch to test Note.findById
+  let noteById = undefined;
+
+  try {
+    noteById = await Note.findById(id).exec();
+    return noteById;
+  } catch (error) {
+    return res
+      .status(500)
+      .send(
+        "An error occured with when trying to finding this note by it's ID" +
+          " (this is possibly a server error and not that the note doesn't exits) ఠ్ఠᗣఠ్ఠ )"
+      );
+  }
+}
+
+app.get("/notes/:_id", async (req, res) => {
+  //const noteById = await Note.findById(req.params).exec();
+  const noteById = checkNoteById(res, req.params._id);
 
   if (noteById === null) {
     return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
@@ -68,9 +86,9 @@ app.get("/store/:_id", async (req, res) => {
 
 // --------------------------------------------------
 // DELETE BY ID: /delete/[id] deleted that id entry
-app.delete("/delete/:_id", async (req, res) => {
-  const noteById = await Note.findById(req.params).exec();
-
+app.delete("/notes/:_id", async (req, res) => {
+  //const noteById = await Note.findById(req.params).exec();
+  const noteById = checkNoteById(res, req.params._id);
   if (noteById === null) {
     return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
   } else {
@@ -117,15 +135,14 @@ app.post("/notes", async (req, res) => {
 
 // --------------------------------------------------
 // UPDATE BY ID: /update/[id] changes the note for that entry
-app.patch("/update/:_id/:notes", async (req, res) => {
-  //let newNote = prompt("Please enter your new notes", "New note");
-
-  const noteById = await Note.findById(req.params._id).exec();
+app.patch("/notes/:_id/", async (req, res) => {
+  //const noteById = await Note.findById(req.params).exec();
+  const noteById = checkNoteById(res, req.params._id);
 
   if (noteById === null) {
     return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
   } else {
-    await Note.findByIdAndUpdate(req.params._id, { notes: req.params.notes });
+    await Note.findByIdAndUpdate(req.params._id, { notes: req.body.notes });
     return res
       .status(200)
       .send("this note has been updated successfully ٩(`･ω･´)و ");
