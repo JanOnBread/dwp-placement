@@ -56,12 +56,12 @@ app.get("/notes", async (req, res) => {
 // --------------------------------------------------
 // GET BY ID: /store/[id] returns on that id entry
 
-async function checkNoteById(res, id) {
+function checkNoteById(res, id) {
   // adding a try catch to test Note.findById
   let noteById = undefined;
 
   try {
-    noteById = await Note.findById(id).exec();
+    noteById = Note.findById(id).exec();
     return noteById;
   } catch (error) {
     return res
@@ -75,7 +75,7 @@ async function checkNoteById(res, id) {
 
 app.get("/notes/:_id", async (req, res) => {
   //const noteById = await Note.findById(req.params).exec();
-  const noteById = checkNoteById(res, req.params._id);
+  const noteById = await checkNoteById(res, req.params._id);
 
   if (noteById === null) {
     return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
@@ -88,7 +88,8 @@ app.get("/notes/:_id", async (req, res) => {
 // DELETE BY ID: /delete/[id] deleted that id entry
 app.delete("/notes/:_id", async (req, res) => {
   //const noteById = await Note.findById(req.params).exec();
-  const noteById = checkNoteById(res, req.params._id);
+  const noteById = await checkNoteById(res, req.params._id);
+
   if (noteById === null) {
     return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
   } else {
@@ -135,9 +136,10 @@ app.post("/notes", async (req, res) => {
 
 // --------------------------------------------------
 // UPDATE BY ID: /update/[id] changes the note for that entry
+
 app.patch("/notes/:_id/", async (req, res) => {
   //const noteById = await Note.findById(req.params).exec();
-  const noteById = checkNoteById(res, req.params._id);
+  const noteById = await checkNoteById(res, req.params._id);
 
   if (noteById === null) {
     return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
