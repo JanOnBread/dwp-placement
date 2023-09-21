@@ -41,12 +41,52 @@ const Note = mongoose.model("Note", noteSchema);
 
 //=============================================================
 
+//  POST : adds a new note
+
+app.post("/notes", async (req, res) => {
+  //generating new id
+  const maxSchemas = await Note.findOne().sort({ _id: -1 }).exec();
+  const id = maxSchemas === null ? 0 : maxSchemas._id + 1;
+
+  // getting current data and time
+  const date = String(new Date());
+
+  // Defining Schemas
+  const document = new Note({
+    _id: id,
+    date: date,
+    notes: req.body.notes,
+  });
+
+  // return an error if the note field is empty
+  if (req.body.notes === undefined) {
+    return res
+      .status(400)
+      .send("The note field is empty so a note was not sent (つ﹏<。)");
+  }
+
+  // Saving our new note into our database
+  try {
+    await document.save();
+    const result = {
+      message: "You have added a new note ( ´∀｀)b",
+      id,
+    };
+    return res.status(201).json(result);
+  } catch (error) {
+    return res
+      .status(500)
+      .send("An error occured so a note was not posted ( ఠ్ఠᗣఠ్ఠ )");
+  }
+});
+
+// ------------------------------------------------------------
 //  GET : will show us all current notes in our database
 
 app.get("/notes", async (req, res) => {
   try {
     allNotes = await Note.find({});
-    return res.send(allNotes);
+    return res.status(200).send(allNotes);
   } catch (error) {
     return res
       .status(500)
@@ -56,7 +96,7 @@ app.get("/notes", async (req, res) => {
 
 // ------------------------------------------------------------
 
-// GET BY ID: /store/[id] returns based on id
+// GET BY ID: /notes/[id] returns based on id
 
 function checkNoteById(res, id) {
   // adding a try catch to test Note.findById
@@ -88,76 +128,6 @@ app.get("/notes/:_id", async (req, res) => {
 
 // ------------------------------------------------------------
 
-// DELETE BY ID: /delete/[id] deleted that id entry
-
-app.delete("/notes/:_id", async (req, res) => {
-  //const noteById = await Note.findById(req.params).exec();
-  const noteById = await checkNoteById(res, req.params._id);
-
-  if (noteById === null) {
-    return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
-  } else {
-    await Note.findByIdAndRemove(req.params).exec();
-    return res
-      .status(200)
-      .send("this note has been deleted successfully deleted ٩(`･ω･´)و ");
-  }
-});
-// ------------------------------------------------------------
-
-// DELETE ALL: /delete/all deleted all notes
-
-app.delete("/notes/", async (req, res) => {
-  try {
-    await Note.deleteMany({});
-    return res.send("All notes have been deleted ٩(`･ω･´)و ");
-  } catch (error) {
-    return res
-      .status(500)
-      .send("An error has occured - all notes where note delated (⋟﹏⋞)");
-  }
-});
-
-// ------------------------------------------------------------
-
-//  POST : adds a new note
-
-app.post("/notes", async (req, res) => {
-  //generating new id
-  const maxSchemas = await Note.findOne().sort({ _id: -1 }).exec();
-  const id = maxSchemas._id;
-  +1;
-
-  // getting current data and time
-  const date = String(new Date());
-
-  // Defining Schemas
-  const document = new Note({
-    _id: id,
-    date: date,
-    notes: req.body.notes,
-  });
-
-  // return an error if the note field is empty
-  if (req.body.notes === undefined) {
-    return res
-      .status(400)
-      .send("The note field is empty so a note was not sent (つ﹏<。)");
-  }
-
-  // Saving our new note into our database
-  try {
-    await document.save();
-    return res.status(201).send("You have added a new note ( ´∀｀)b");
-  } catch (error) {
-    return res
-      .status(500)
-      .send("An error occured so a note was not posted ( ఠ్ఠᗣఠ్ఠ )");
-  }
-});
-
-// ------------------------------------------------------------
-
 // UPDATE BY ID: /update/[id] changes the note for that entry
 
 app.patch("/notes/:_id/", async (req, res) => {
@@ -173,3 +143,35 @@ app.patch("/notes/:_id/", async (req, res) => {
       .send("this note has been updated successfully ٩(`･ω･´)و ");
   }
 });
+// ------------------------------------------------------------
+
+// DELETE BY ID: /delete/[id] deleted that id entry
+
+app.delete("/notes/:_id", async (req, res) => {
+  //const noteById = await Note.findById(req.params).exec();
+  const noteById = await checkNoteById(res, req.params._id);
+
+  if (noteById === null) {
+    return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
+  } else {
+    await Note.findByIdAndRemove(req.params).exec();
+    return res
+      .status(200)
+      .send("this note has been deleted successfully deleted ٩(`･ω･´)و ");
+  }
+});
+
+// DELETE ALL: /delete/all deleted all notes
+
+app.delete("/notes/", async (req, res) => {
+  try {
+    await Note.deleteMany({});
+    return res.status(200).send("All notes have been deleted ٩(`･ω･´)و");
+  } catch (error) {
+    return res
+      .status(500)
+      .send("An error has occured - all notes where note delated (⋟﹏⋞)");
+  }
+});
+
+module.exports = app;
