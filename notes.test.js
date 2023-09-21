@@ -103,33 +103,3 @@ describe("TEST FOR DELETE ", () => {
 });
 
 // ------------------------------------------------------------
-
-// Test for DELETE
-
-//   //   it("Should return the a message if all notes have been succesfully deleted", () => {
-//   //     expect(result.span).toBe("All notes have been deleted ٩(`･ω･´)و");
-//   //   });
-// });
-
-// ------------------------------------------------------------
-
-// Test for UPDATE
-
-//==================================
-
-// it("should add a note to the database", async () => {
-//     const postBody = {
-//       notes: "this is a test note :)",
-//     };
-//     const result = await request(app)
-//       .post("/notes")
-//       .set("Content-Type", "application/json")
-//       .send(postBody);
-
-//     expect(result.status).toBe(201);
-//     // expect message to be'You have added a new note ( ´∀｀)b' (useing .body somewhere)
-
-//     // send a delete request to the database
-//     // expect the delete request .status to be 200
-//     console.log(result.body);
-//   });
