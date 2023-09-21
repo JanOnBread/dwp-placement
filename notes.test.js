@@ -4,10 +4,11 @@ const app = require("./notes");
 const request = require("supertest");
 const { expect } = require("@jest/globals");
 
-// ------------------------------------------------------------
-
 // making Id a global variable
 let id = null;
+
+// ------------------------------------------------------------
+// TEST FOR POST
 
 describe("TEST FOR POST", () => {
   it("Should return an error if the body/notes is empty", async () => {
