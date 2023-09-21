@@ -135,10 +135,18 @@ app.patch("/notes/:_id/", async (req, res) => {
   if (noteById === null) {
     return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
   } else {
-    await Note.findByIdAndUpdate(req.params._id, { notes: req.body.notes });
-    return res
-      .status(200)
-      .send("this note has been updated successfully ٩(`･ω･´)و");
+    try {
+      await Note.findByIdAndUpdate(req.params._id, { notes: req.body.notes });
+      return res
+        .status(200)
+        .send("this note has been updated successfully ٩(`･ω･´)و");
+    } catch (error) {
+      return res
+        .status(500)
+        .send(
+          "An error has occurred - not was not updated (⋟﹏⋞) - this is possibly a server error"
+        );
+    }
   }
 });
 // ------------------------------------------------------------
@@ -152,10 +160,18 @@ app.delete("/notes/:_id", async (req, res) => {
   if (noteById === null) {
     return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
   } else {
-    await Note.findByIdAndRemove(req.params).exec();
-    return res
-      .status(200)
-      .send("this note has been deleted successfully deleted ٩(`･ω･´)و");
+    try {
+      await Note.findByIdAndRemove(req.params).exec();
+      return res
+        .status(200)
+        .send("this note has been deleted successfully deleted ٩(`･ω･´)و");
+    } catch (error) {
+      return res
+        .status(500)
+        .send(
+          "An error has occurred - this note was note deleted (⋟﹏⋞)- Possible server error"
+        );
+    }
   }
 });
 
