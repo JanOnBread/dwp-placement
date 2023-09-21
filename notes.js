@@ -104,7 +104,7 @@ function checkNoteById(res, id) {
 
   try {
     noteById = Note.findById(id).exec();
-    return noteById;
+    return res.status(200).send(noteById);
   } catch (error) {
     return res
       .status(500)
