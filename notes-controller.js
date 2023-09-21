@@ -1,3 +1,5 @@
+const notesService = require("./notes-service");
+
 // Setting up Express server
 const express = require("express");
 const app = express();
@@ -9,55 +11,11 @@ app.listen(port, () => {
   console.log("The server is running at " + url);
 });
 
-//==========================================================
-
-// Setting up MongoDB (our Database)
-const mongoose = require("mongoose");
-
-const dataBaseLoc =
-  "mongodb+srv://janet:CF49WrEQOsdJ3ukN@janet-notes.mspqjdv.mongodb.net/placement?retryWrites=true&w=majority";
-//Local "mongodb+srv://jcheung801:afyRjrtKZbmaz5N5@cluster0.3wjqms8.mongodb.net/Placement?retryWrites=true&w=majority";
-
-mongoose
-  .connect(dataBaseLoc, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Our database is located at: " + dataBaseLoc);
-  })
-  .catch((error) => {
-    console.log("A database was not set up");
-    console.error(error);
-  });
-
-// Defining a Schema
-const noteSchema = {
-  _id: Number, // auto-generated
-  date: String, // auto-generated
-  notes: String, // custom imputed (body),"Today I learnt that ..."
-};
-const Note = mongoose.model("Note", noteSchema);
-
 //=============================================================
 
 //  POST : adds a new note
 
 app.post("/notes", async (req, res) => {
-  //generating new id
-  const maxSchemas = await Note.findOne().sort({ _id: -1 }).exec();
-  const id = maxSchemas === null ? 0 : maxSchemas._id + 1;
-
-  // getting current data and time
-  const date = String(new Date());
-
-  // Defining Schemas
-  const document = new Note({
-    _id: id,
-    date: date,
-    notes: req.body.notes,
-  });
-
   // return an error if the note field is empty
   if (req.body.notes === undefined) {
     return res
@@ -67,13 +25,10 @@ app.post("/notes", async (req, res) => {
 
   // Saving our new note into our database
   try {
-    await document.save();
-    const result = {
-      message: "You have added a new note ( ´∀｀)b",
-      id,
-    };
+    const result = await notesService.createNewNote(req);
     return res.status(201).json(result);
   } catch (error) {
+    console.log(error);
     return res
       .status(500)
       .send("An error occurred so a note was not posted ( ఠ్ఠᗣఠ్ఠ )");
@@ -85,7 +40,7 @@ app.post("/notes", async (req, res) => {
 
 app.get("/notes", async (req, res) => {
   try {
-    allNotes = await Note.find({});
+    allNotes = await notesService.getAllNotes();
     return res.status(200).send(allNotes);
   } catch (error) {
     return res
@@ -98,24 +53,9 @@ app.get("/notes", async (req, res) => {
 
 // GET BY ID: /notes/[id] returns based on id
 
-function checkNoteById(res, id) {
-  // adding a try catch to test if a note, given an Id, exists
-
-  try {
-    return Note.findById(id).exec();
-  } catch (error) {
-    return res
-      .status(500)
-      .send(
-        "An error occurred with when trying to finding this note by it's ID" +
-          " (this is possibly a server error and not that the note doesn't exits) ఠ్ఠᗣఠ్ఠ )"
-      );
-  }
-}
-
 app.get("/notes/:_id", async (req, res) => {
   //const noteById = await Note.findById(req.params).exec();
-  const noteById = await checkNoteById(res, req.params._id);
+  const noteById = await notesService.getById(res, req.params._id);
 
   if (noteById === null) {
     return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ");
@@ -130,13 +70,15 @@ app.get("/notes/:_id", async (req, res) => {
 
 app.patch("/notes/:_id/", async (req, res) => {
   //const noteById = await Note.findById(req.params).exec();
-  const noteById = await checkNoteById(res, req.params._id);
+  const noteById = await notesService.checkNoteById(res, req.params._id);
 
   if (noteById === null) {
     return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
   } else {
     try {
-      await Note.findByIdAndUpdate(req.params._id, { notes: req.body.notes });
+      await notesService.findByIdAndUpdate(req.params._id, {
+        notes: req.body.notes,
+      });
       return res
         .status(200)
         .send("this note has been updated successfully ٩(`･ω･´)و");
@@ -149,7 +91,7 @@ app.patch("/notes/:_id/", async (req, res) => {
     }
   }
 });
-// ------------------------------------------------------------
+//------------------------------------------------------------
 
 // DELETE BY ID: /delete/[id] deleted that id entry
 
@@ -161,7 +103,7 @@ app.delete("/notes/:_id", async (req, res) => {
     return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
   } else {
     try {
-      await Note.findByIdAndRemove(req.params).exec();
+      await notesService.findByIdAndRemove(req.params).exec();
       return res
         .status(200)
         .send("this note has been deleted successfully deleted ٩(`･ω･´)و");
@@ -179,7 +121,7 @@ app.delete("/notes/:_id", async (req, res) => {
 
 app.delete("/notes/", async (req, res) => {
   try {
-    await Note.deleteMany({});
+    await notesService.deleteMany({});
     return res.status(200).send("All notes have been deleted ٩(`･ω･´)و");
   } catch (error) {
     return res
