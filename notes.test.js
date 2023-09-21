@@ -1,95 +1,104 @@
+// Defining Constants
+
 const app = require("./notes");
 const request = require("supertest");
 const { expect } = require("@jest/globals");
 
 // ------------------------------------------------------------
 
-describe("TEST FOR POST", () => {
-  let resultPost = undefined;
+// making Id a globel vaiable
+let id = null;
 
-  // TEST FOR POST: Returning error if the body is empty
+describe("TEST FOR POST", () => {
   it("Should return an error if the body/notes is empty", async () => {
-    const postBody = {};
-    resultPostEmpty = await request(app)
+    const postBody = {}; // creating an empty note
+    const resultPostEmpty = await request(app)
       .post("/notes")
       .set("Content-Type", "application/json")
       .send(postBody);
-
     expect(resultPostEmpty.status).toBe(400);
+    expect(resultPostEmpty.text).toBe(
+      "The note field is empty so a note was not sent (つ﹏<。)"
+    );
   });
 
-  //   it("Should return a message if a notes was not posted due to and empty body", async () => {
-  //     await expect(result.body).toBe(
-  //       "The note field is empty so a note was not sent (つ﹏<。)"
-  //     );
-  //   });
-
-  it("should add a note to the database", async () => {
-    const postBody = {
+  it("Should add a new note into the database", async () => {
+    postBody = {
       notes: "this is a test note :)",
     };
-    resultPost = await request(app)
+    const resultPost = await request(app)
       .post("/notes")
       .set("Content-Type", "application/json")
       .send(postBody);
-
     expect(resultPost.status).toBe(201);
-  });
-
-  // TEST FOR POST : Sending a message back if succesfully posted
-  it("Should return the a message if succesfully posted", () => {
     expect(resultPost.body.message).toBe("You have added a new note ( ´∀｀)b");
+
+    id = resultPost.body.id;
+  });
+});
+
+// ------------------------------------------------------------
+// TEST FOR GET
+
+describe("TEST FOR GET", () => {
+  it(" /notes should return all notes", async () => {
+    const resultGet = await request(app).get("/notes");
+    expect(resultGet.status).toBe(200);
   });
 
-  // ------------------------------------------------------------
-  // TEST FOR GET
-
-  describe("TEST FOR GET", () => {
-    it(" /notes should return all notes", async () => {
-      const resultGet = await request(app).get("/notes");
-      expect(resultGet.status).toBe(200);
-    });
-
-    it("/notes/{id} should return that id's notes", async () => {
-      const resultGetId = await request(app).get(
-        "/notes/" + resultPost.body.id
-      );
-      expect(resultGetId.status).toBe(200);
-      expect(resultGetId.body.id).toBe(resultPost.body.id);
-    });
+  it("/notes/{id} should return that id's notes", async () => {
+    const resultGetId = await request(app).get("/notes/" + String(id));
+    expect(resultGetId.status).toBe(200);
+    expect(resultGetId.body._id).toBe(id);
   });
 
-  // ------------------------------------------------------------
-  // TEST FOR UPDATE
+  it("/notes/{invalid id} should return an error", async () => {
+    const resultGetId = await request(app).get("/notes/" + String(id + 1));
+    expect(resultGetId.status).toBe(404);
+    expect(resultGetId.text).toBe("There is no entry with this id ( ＞Д＜ )ゝ");
+  });
+});
 
-  describe("TEST FOR UPDATE ", () => {
-    it("/notes/{id} with a body, should update the note", async () => {
-      const updateBody = {
-        notes: "this is a update",
-      };
-      resultUpdate = await request(app)
-        .patch("/notes/" + resultPost.body.id)
-        .set("Content-Type", "application/json")
-        .send(updateBody);
+// ------------------------------------------------------------
+// TEST FOR UPDATE
 
-      expect(resultUpdate.status).toBe(200);
-    });
+describe("TEST FOR UPDATE ", () => {
+  it("/notes/{id} with a body, should update the note", async () => {
+    const updateBody = {
+      notes: "this is a update",
+    };
+    resultUpdate = await request(app)
+      .patch("/notes/" + id)
+      .set("Content-Type", "application/json")
+      .send(updateBody);
+
+    expect(resultUpdate.status).toBe(200);
+    expect(resultUpdate.text).toBe(
+      "this note has been updated successfully ٩(`･ω･´)و"
+    );
+
+    const resultUpdateNewNote = await request(app).get("/notes/" + id);
+    expect(resultUpdateNewNote.body.notes).toBe("this is a update");
+  });
+});
+
+// ------------------------------------------------------------
+// TEST FOR DElETE
+
+describe("TEST FOR DELETE ", () => {
+  it("/notes/{id} should delete notes based on an id", async () => {
+    resultDelId = await request(app).delete("/notes/" + id);
+    expect(resultDelId.status).toBe(200);
+    expect(resultDelId.text).toBe(
+      "this note has been deleted successfully deleted ٩(`･ω･´)و"
+    );
   });
 
-  // ------------------------------------------------------------
-  // TEST FOR DElETE
-
-  describe("TEST FOR DELETE ", () => {
-    it("/notes/{id} should delete notes based on an id", async () => {
-      resultDelId = await request(app).delete("/notes/" + resultUpdate.body.id);
-      expect(resultDelId.status).toBe(200);
-    });
-
-    //
-    it("/notes should delete all notes", async () => {
-      resultDelAll = await request(app).delete("/notes");
-      expect(resultDelAll.status).toBe(200);
-    });
+  //
+  it("/notes should delete all notes", async () => {
+    resultDelAll = await request(app).delete("/notes");
+    expect(resultDelAll.status).toBe(200);
+    expect(resultDelAll.text).toBe("All notes have been deleted ٩(`･ω･´)و");
   });
 });
 

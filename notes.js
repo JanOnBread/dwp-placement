@@ -99,12 +99,10 @@ app.get("/notes", async (req, res) => {
 // GET BY ID: /notes/[id] returns based on id
 
 function checkNoteById(res, id) {
-  // adding a try catch to test Note.findById
-  let noteById = undefined;
+  // adding a try catch to test if a note, given an Id, exists
 
   try {
-    noteById = Note.findById(id).exec();
-    return res.status(200).send(noteById);
+    return Note.findById(id).exec();
   } catch (error) {
     return res
       .status(500)
@@ -120,7 +118,7 @@ app.get("/notes/:_id", async (req, res) => {
   const noteById = await checkNoteById(res, req.params._id);
 
   if (noteById === null) {
-    return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
+    return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ");
   } else {
     return res.send(noteById);
   }
@@ -140,7 +138,7 @@ app.patch("/notes/:_id/", async (req, res) => {
     await Note.findByIdAndUpdate(req.params._id, { notes: req.body.notes });
     return res
       .status(200)
-      .send("this note has been updated successfully ٩(`･ω･´)و ");
+      .send("this note has been updated successfully ٩(`･ω･´)و");
   }
 });
 // ------------------------------------------------------------
@@ -157,7 +155,7 @@ app.delete("/notes/:_id", async (req, res) => {
     await Note.findByIdAndRemove(req.params).exec();
     return res
       .status(200)
-      .send("this note has been deleted successfully deleted ٩(`･ω･´)و ");
+      .send("this note has been deleted successfully deleted ٩(`･ω･´)و");
   }
 });
 
