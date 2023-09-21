@@ -18,19 +18,18 @@ mongoose
     console.error(error);
   });
 
-// Defining our model
-const Note = mongoose.model("Note", noteSchema);
-
-//=====================================================
-
-// POST
-
 // Defining a Schema
 const noteSchema = {
   _id: Number, // auto-generated
   date: String, // auto-generated
   notes: String, // custom imputed (body),"Today I learnt that ..."
 };
+// Defining our model
+const Note = mongoose.model("Note", noteSchema);
+
+//=====================================================
+
+// POST
 
 // Creating a new note
 
@@ -68,11 +67,11 @@ async function getAllNotes() {
 }
 
 // Function to find a note given an Id + error catch it
-// sidenote: not for notes that doesn't exist since that returns a null
-async function checkNoteById(res, id) {
+// side note: not for notes that doesn't exist since that returns a null
+async function getById(res, id) {
   // adding a try catch to test if a note, given an Id, exists
   try {
-    return await notesService.findById(id).exec();
+    return await Note.findById(id).exec();
   } catch (error) {
     return res
       .status(500)
@@ -83,15 +82,24 @@ async function checkNoteById(res, id) {
   }
 }
 
-async function getById(res, id) {
-  await Note.checkNoteById(res, id);
-}
 //=====================================================
 
 // PATCH
 
-async function findByIdAndUpdate(id, notes) {
-  await Note.findByIdAndUpdate(id, { notes: notes });
+async function updateById(id, notes) {
+  await Note.findByIdAndUpdate(id, notes);
+}
+
+//=====================================================
+
+// DELETE
+
+async function delById(req) {
+  await Note.findByIdAndRemove(req).exec();
+}
+
+async function deleteAllNotes() {
+  await Note.deleteMany({}).exec();
 }
 
 //-----------------------------------------------
@@ -102,6 +110,8 @@ async function findByIdAndUpdate(id, notes) {
 module.exports = {
   createNewNote,
   getAllNotes,
-  checkNoteById,
   getById,
+  updateById,
+  delById,
+  deleteAllNotes,
 };

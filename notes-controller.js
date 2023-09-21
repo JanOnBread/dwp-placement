@@ -54,7 +54,6 @@ app.get("/notes", async (req, res) => {
 // GET BY ID: /notes/[id] returns based on id
 
 app.get("/notes/:_id", async (req, res) => {
-  //const noteById = await Note.findById(req.params).exec();
   const noteById = await notesService.getById(res, req.params._id);
 
   if (noteById === null) {
@@ -69,14 +68,13 @@ app.get("/notes/:_id", async (req, res) => {
 // UPDATE BY ID: /update/[id] changes the note for that entry
 
 app.patch("/notes/:_id/", async (req, res) => {
-  //const noteById = await Note.findById(req.params).exec();
-  const noteById = await notesService.checkNoteById(res, req.params._id);
+  const noteById = await notesService.getById(res, req.params._id);
 
   if (noteById === null) {
     return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
   } else {
     try {
-      await notesService.findByIdAndUpdate(req.params._id, {
+      await notesService.updateById(req.params._id, {
         notes: req.body.notes,
       });
       return res
@@ -97,13 +95,13 @@ app.patch("/notes/:_id/", async (req, res) => {
 
 app.delete("/notes/:_id", async (req, res) => {
   //const noteById = await Note.findById(req.params).exec();
-  const noteById = await checkNoteById(res, req.params._id);
+  const noteById = await notesService.getById(res, req.params._id);
 
   if (noteById === null) {
     return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
   } else {
     try {
-      await notesService.findByIdAndRemove(req.params).exec();
+      await notesService.delById(req.params);
       return res
         .status(200)
         .send("this note has been deleted successfully deleted ٩(`･ω･´)و");
@@ -121,7 +119,7 @@ app.delete("/notes/:_id", async (req, res) => {
 
 app.delete("/notes/", async (req, res) => {
   try {
-    await notesService.deleteMany({});
+    await notesService.deleteAllNotes();
     return res.status(200).send("All notes have been deleted ٩(`･ω･´)و");
   } catch (error) {
     return res
