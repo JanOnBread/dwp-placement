@@ -6,7 +6,7 @@ const { expect } = require("@jest/globals");
 
 // ------------------------------------------------------------
 
-// making Id a globel vaiable
+// making Id a global variable
 let id = null;
 
 describe("TEST FOR POST", () => {
@@ -41,7 +41,7 @@ describe("TEST FOR POST", () => {
 // TEST FOR GET
 
 describe("TEST FOR GET", () => {
-  it(" /notes should return all notes", async () => {
+  it("/notes should return all notes", async () => {
     const resultGet = await request(app).get("/notes");
     expect(resultGet.status).toBe(200);
   });

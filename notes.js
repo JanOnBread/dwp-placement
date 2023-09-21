@@ -31,11 +31,11 @@ mongoose
     console.error(error);
   });
 
-// Defining a Schemea
+// Defining a Schema
 const noteSchema = {
   _id: Number, // auto-generated
   date: String, // auto-generated
-  notes: String, // custom inputed (body),"Today I learnt that ..."
+  notes: String, // custom imputed (body),"Today I learnt that ..."
 };
 const Note = mongoose.model("Note", noteSchema);
 
@@ -76,7 +76,7 @@ app.post("/notes", async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .send("An error occured so a note was not posted ( ఠ్ఠᗣఠ్ఠ )");
+      .send("An error occurred so a note was not posted ( ఠ్ఠᗣఠ్ఠ )");
   }
 });
 
@@ -90,7 +90,7 @@ app.get("/notes", async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .send("An error has occured - Database can't be shown (⋟﹏⋞)");
+      .send("An error has occurred - Database can't be shown (⋟﹏⋞)");
   }
 });
 
@@ -107,7 +107,7 @@ function checkNoteById(res, id) {
     return res
       .status(500)
       .send(
-        "An error occured with when trying to finding this note by it's ID" +
+        "An error occurred with when trying to finding this note by it's ID" +
           " (this is possibly a server error and not that the note doesn't exits) ఠ్ఠᗣఠ్ఠ )"
       );
   }
@@ -168,7 +168,7 @@ app.delete("/notes/", async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .send("An error has occured - all notes where note delated (⋟﹏⋞)");
+      .send("An error has occurred - all notes where note deleted (⋟﹏⋞)");
   }
 });
 
