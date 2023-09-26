@@ -17,6 +17,7 @@ app.listen(port, () => {
 
 app.post("/notes", async (req, res) => {
   // return an error if the note field is empty
+  console.log(req.body);
   if (req.body.notes === undefined) {
     return res
       .status(400)
@@ -41,6 +42,7 @@ app.post("/notes", async (req, res) => {
 app.get("/notes", async (req, res) => {
   try {
     allNotes = await notesService.getAllNotes();
+    console.log(allNotes);
     return res.status(200).send(allNotes);
   } catch (error) {
     return res

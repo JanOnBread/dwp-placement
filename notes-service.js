@@ -63,7 +63,7 @@ async function createNewNote(req) {
 // GET
 
 async function getAllNotes() {
-  await Note.find({});
+  return await Note.find({});
 }
 
 // Function to find a note given an Id + error catch it
@@ -76,8 +76,7 @@ async function getById(res, id) {
     return res
       .status(500)
       .send(
-        "An error occurred with when trying to finding this note by it's ID" +
-          " (this is possibly a server error and not that the note doesn't exits) ఠ్ఠᗣఠ్ఠ )"
+        "An error occurred with when trying to finding this note by it's ID \n (this is possibly a server error and not that the note doesn't exits) ఠ్ఠᗣఠ్ఠ )"
       );
   }
 }
