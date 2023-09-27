@@ -4,6 +4,7 @@ const notesService = require("./notes-service");
 const express = require("express");
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const port = 3002;
 const url = "http://localhost:" + port;
 
@@ -17,8 +18,10 @@ app.listen(port, () => {
 
 app.post("/notes", async (req, res) => {
   // return an error if the note field is empty
-  console.log(req.body);
-  if (req.body.notes === undefined) {
+
+  console.log("this is line 21 in the post request", req.body);
+
+  if (req.body.notes === undefined || req.body.notes.length == 0) {
     return res
       .status(400)
       .send("The note field is empty so a note was not sent (つ﹏<。)");
@@ -42,7 +45,6 @@ app.post("/notes", async (req, res) => {
 app.get("/notes", async (req, res) => {
   try {
     allNotes = await notesService.getAllNotes();
-    console.log(allNotes);
     return res.status(200).send(allNotes);
   } catch (error) {
     return res
