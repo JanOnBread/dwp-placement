@@ -71,6 +71,9 @@ async function getAllNotes() {
 async function getById(res, id) {
   // adding a try catch to test if a note, given an Id, exists
   try {
+    console.log(
+      "console log at getById function " + (await Note.findById(id).exec())
+    );
     return await Note.findById(id).exec();
   } catch (error) {
     return res

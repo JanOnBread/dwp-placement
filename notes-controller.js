@@ -2,7 +2,14 @@ const notesService = require("./notes-service");
 
 // Setting up Express server
 const express = require("express");
+const cors = require("cors");
 const app = express();
+
+app.use(
+  cors({
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const port = 3002;
