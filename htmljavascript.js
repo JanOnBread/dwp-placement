@@ -1,16 +1,17 @@
-// naming the select
-const verseChoose = document.querySelector("input");
+// listen to Id
+const idChoose = document.querySelector("input");
 
-// where to display the poem
+// where to display the data
 const noteDisplay = document.querySelector("pre[name = 'notes']");
 const dateDisplay = document.querySelector("pre[name = 'date']");
 
-// from the select, what verse is chosen we choose that verse
-verseChoose.addEventListener("change", () => {
+// listen to id and show that id's notes
+idChoose.addEventListener("change", () => {
   const id = verseChoose.value;
   updateDisplay(id);
 });
 
+// notes to fetch notes
 async function updateDisplay(id) {
   // Call `fetch()`, passing in the URL.
   url = "http://localhost:3002/notes/" + id;
@@ -21,7 +22,7 @@ async function updateDisplay(id) {
       mode: "cors",
     });
 
-    // checking if the reponse went through (in connecting to the server)
+    // checking if the response went through (in connecting to the server)
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);
     }
@@ -36,13 +37,15 @@ async function updateDisplay(id) {
   } catch (error) {
     //const text = await response.text();
     //poemDisplay.textContent = String(text);
-    noteDisplay.textContent = `Could not note verse: ${error}`;
+    noteDisplay.textContent = `Could not fetch verse: ${error}`;
     dateDisplay.textContent = ``;
   }
 }
-
+// when html page is refeshed, show note with id 1
 updateDisplay(0);
 verseChoose.value = "0";
+
+///==============================
 // working code
 // if (error === "HTTP error") {
 //     poemDisplay.textContent = `Could not fetch verse: ${error}`;
