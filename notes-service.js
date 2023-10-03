@@ -2,8 +2,8 @@
 const mongoose = require("mongoose");
 
 const dataBaseLoc =
-  "mongodb+srv://janet:CF49WrEQOsdJ3ukN@janet-notes.mspqjdv.mongodb.net/placement?retryWrites=true&w=majority";
-//Local "mongodb+srv://jcheung801:afyRjrtKZbmaz5N5@cluster0.3wjqms8.mongodb.net/Placement?retryWrites=true&w=majority";
+  //"mongodb+srv://janet:CF49WrEQOsdJ3ukN @janet-notes.mspqjdv.mongodb.net/Placement?retryWrites=true&w=majority";
+  "mongodb+srv://jcheung801:DqoFg2n9NTaEufew@cluster0.3wjqms8.mongodb.net/Placement?retryWrites=true&w=majority";
 
 mongoose
   .connect(dataBaseLoc, {
@@ -71,9 +71,9 @@ async function getAllNotes() {
 async function getById(res, id) {
   // adding a try catch to test if a note, given an Id, exists
   try {
-    console.log(
-      "console log at getById function " + (await Note.findById(id).exec())
-    );
+    // console.log(
+    //   "console log at getById function " + (await Note.findById(id).exec())
+    // );
     return await Note.findById(id).exec();
   } catch (error) {
     return res

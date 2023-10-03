@@ -1,3 +1,9 @@
+function eraseText() {
+  document.getElementById("note").value = "";
+}
+
+// Script for getting notes by Id
+
 // listen to Id
 const idChoose = document.querySelector("input");
 
@@ -7,7 +13,7 @@ const dateDisplay = document.querySelector("pre[name = 'date']");
 
 // listen to id and show that id's notes
 idChoose.addEventListener("change", () => {
-  const id = verseChoose.value;
+  const id = idChoose.value;
   updateDisplay(id);
 });
 
@@ -43,7 +49,7 @@ async function updateDisplay(id) {
 }
 // when html page is refeshed, show note with id 1
 updateDisplay(0);
-verseChoose.value = "0";
+idChoose.value = "0";
 
 ///==============================
 // working code
