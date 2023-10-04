@@ -2,7 +2,9 @@
 const mongoose = require("mongoose");
 
 const dataBaseLoc =
-  //"mongodb+srv://janet:CF49WrEQOsdJ3ukN @janet-notes.mspqjdv.mongodb.net/Placement?retryWrites=true&w=majority";
+  // "mongodb+srv://janet:CF49WrEQOsdJ3ukN @janet-notes.mspqjdv.mongodb.net/Placement?retryWrites=true&w=majority";
+
+  // local one
   "mongodb+srv://jcheung801:DqoFg2n9NTaEufew@cluster0.3wjqms8.mongodb.net/Placement?retryWrites=true&w=majority";
 
 mongoose

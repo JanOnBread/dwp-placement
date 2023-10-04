@@ -31,7 +31,9 @@ app.post("/notes", async (req, res) => {
   if (req.body.notes === undefined || req.body.notes.length == 0) {
     return res
       .status(400)
-      .send("The note field is empty so a note was not sent (つ﹏<。)");
+      .json({
+        message: "The note field is empty so a note was not sent (つ﹏<。)",
+      });
   }
 
   // Saving our new note into our database
@@ -42,7 +44,9 @@ app.post("/notes", async (req, res) => {
     console.log(error);
     return res
       .status(500)
-      .send("An error occurred so a note was not posted ( ఠ్ఠᗣఠ్ఠ )");
+      .json({
+        message: "An error occurred so a note was not posted ( ఠ్ఠᗣఠ్ఠ )",
+      });
   }
 });
 
@@ -56,7 +60,9 @@ app.get("/notes", async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .send("An error has occurred - Database can't be shown (⋟﹏⋞)");
+      .json({
+        message: "An error has occurred - Database can't be shown (⋟﹏⋞)",
+      });
   }
 });
 
@@ -68,7 +74,9 @@ app.get("/notes/:_id", async (req, res) => {
   const noteById = await notesService.getById(res, req.params._id);
 
   if (noteById === null) {
-    return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ");
+    return res
+      .status(404)
+      .json({ message: "There is no entry with this id ( ＞Д＜ )ゝ" });
   } else {
     return res.send(noteById);
   }
@@ -82,7 +90,9 @@ app.patch("/notes/:_id/", async (req, res) => {
   const noteById = await notesService.getById(res, req.params._id);
 
   if (noteById === null) {
-    return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
+    return res
+      .status(404)
+      .json({ message: "There is no entry with this id ( ＞Д＜ )ゝ " });
   } else {
     try {
       await notesService.updateById(req.params._id, {
@@ -90,13 +100,14 @@ app.patch("/notes/:_id/", async (req, res) => {
       });
       return res
         .status(200)
-        .send("this note has been updated successfully ٩(`･ω･´)و");
+        .json({ message: "this note has been updated successfully ٩(`･ω･´)و" });
     } catch (error) {
       return res
         .status(500)
-        .send(
-          "An error has occurred - not was not updated (⋟﹏⋞) - this is possibly a server error"
-        );
+        .json({
+          message:
+            "An error has occurred - not was not updated (⋟﹏⋞) - this is possibly a server error",
+        });
     }
   }
 });
@@ -109,19 +120,24 @@ app.delete("/notes/:_id", async (req, res) => {
   const noteById = await notesService.getById(res, req.params._id);
 
   if (noteById === null) {
-    return res.status(404).send("There is no entry with this id ( ＞Д＜ )ゝ ");
+    return res
+      .status(404)
+      .json({ message: "There is no entry with this id ( ＞Д＜ )ゝ " });
   } else {
     try {
       await notesService.delById(req.params);
       return res
         .status(200)
-        .send("this note has been deleted successfully deleted ٩(`･ω･´)و");
+        .json({
+          message: "this note has been deleted successfully deleted ٩(`･ω･´)و",
+        });
     } catch (error) {
       return res
         .status(500)
-        .send(
-          "An error has occurred - this note was note deleted (⋟﹏⋞)- Possible server error"
-        );
+        .json({
+          message:
+            "An error has occurred - this note was note deleted (⋟﹏⋞)- Possible server error",
+        });
     }
   }
 });
@@ -131,11 +147,15 @@ app.delete("/notes/:_id", async (req, res) => {
 app.delete("/notes/", async (req, res) => {
   try {
     await notesService.deleteAllNotes();
-    return res.status(200).send("All notes have been deleted ٩(`･ω･´)و");
+    return res
+      .status(200)
+      .json({ message: "All notes have been deleted ٩(`･ω･´)و" });
   } catch (error) {
     return res
       .status(500)
-      .send("An error has occurred - all notes where note deleted (⋟﹏⋞)");
+      .json({
+        message: "An error has occurred - all notes where note deleted (⋟﹏⋞)",
+      });
   }
 });
 

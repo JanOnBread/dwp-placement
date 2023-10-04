@@ -66,6 +66,9 @@
         transform: translateY(4px);
       }
       pre {
+        margin-left: auto;
+        margin-right: auto;
+        width: 80%;
         line-height: 1.5;
         color: #4f3f3b;
         letter-spacing: 0.05rem;
@@ -75,22 +78,30 @@
         border-radius: 10px;
         background-color: #d2c6c6;
         font-size: 16px;
+        /* CSS code for centering  */
         white-space: pre-wrap; /* Since CSS 2.1 */
         white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
         white-space: -pre-wrap; /* Opera 4-6 */
         white-space: -o-pre-wrap; /* Opera 7 */
         word-wrap: break-word; /* Internet Explorer 5.5+ */
       }
-      .label {
+
+      label {
+        margin: auto;
         font-family: verdana;
-        width: 200px;
-        margin-right: 33px;
+        width: 150px;
+        font-size: 1em;
+        color: #312727;
+        letter-spacing: 3px;
       }
 
-      .input {
+      input {
         font-family: verdana;
-        width: 200px;
         padding: 5px;
+        background-color: #ffffff;
+      }
+      hr {
+        border-top: 1px dashed #312727;
       }
     </style>
   </head>
@@ -100,20 +111,20 @@
 
   <!---------------------------------------------------------------------------------->
   <body>
+    <iframe name="dummyFrame" id="dummyFrame" style="display: none"></iframe>
     <!-- TITLE AND HEADERS -->
     <h1>Notes</h1>
     <h2>A simple page to write and store your notes!</h2>
 
     <!-- SUBMITTING A NOTE -->
     <p1>
-      <iframe name="dummyframe" id="dummyframe" style="display: none"></iframe>
       <form
         id="notesFormPost"
         name="notesFormPost"
         method="POST"
         action="http://localhost:3002/notes"
-        target="dummyframe"
-        onsubmit="return !!(eraseText() &  alert('You have posted a note!'));"
+        target="dummyFrame"
+        onsubmit="this.submit(); this.reset() ;return false;"
       >
         <textarea
           id="note"
@@ -128,8 +139,9 @@
         <button class="button1" type="submit" value="Submit">Submit</button>
       </form>
     </p1>
-
+    <br />
     <!--------------------------------------->
+    <hr />
     <p2>
       <h2>Find a Note</h2>
 
@@ -140,9 +152,62 @@
 
       <pre name="notes"></pre>
       <pre name="date"></pre>
-
-      <script src="htmljavascript.js" type="text/javascript"></script>
     </p2>
-    <!--------------------------------------->
+
+    <!--------------------------------------------------->
+
+    <!-- DELETING A NOTE -->
+
+    <p3>
+      <hr />
+      <h2>Deleting a Note</h2>
+
+      <form id="notesFormDel" name="notesFormDel" target="dummyFrame">
+        <label for="byId">ID</label>
+        <input
+          type="radio"
+          name="delByIdOrAll"
+          id="byId"
+          value="Id"
+          onclick="expandFormFunc()"
+          checked
+        />
+        <label for="byAll">All</label>
+        <input
+          type="radio"
+          name="delByIdOrAll"
+          id="byAll"
+          value="All"
+          onclick="expandFormFunc()"
+        />
+        <br />
+        <section id="DelByIdChoose">
+          <label for="DelbyIdChoose">Choose a note by id</label>
+          <input type="number" id="DelByIdInput" name="DelByIdInput" min="0" />
+        </section>
+        <br />
+        <button
+          class="button1"
+          type="submit"
+          value="Submit"
+          onclick="delNotes()"
+        >
+          Submit
+        </button>
+      </form>
+    </p3>
+    <!------------------------------------------------>
+    <!-- Patching a note -->
+
+    <!------------------------------------------------>
+    <br />
+    <hr />
+    <!-- Log/ message bod -->
+
+    <h2>Log from Server</h2>
+
+    <pre name="message"></pre>
+
+    <script src="htmljavascript.js" type="text/javascript"></script>
   </body>
 </html>
