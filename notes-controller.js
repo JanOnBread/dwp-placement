@@ -4,6 +4,7 @@ const notesService = require("./notes-service");
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const path = require("path");
 
 app.use(
   cors({
@@ -15,11 +16,30 @@ app.use(express.urlencoded({ extended: true }));
 const port = 3002;
 const url = "http://localhost:" + port;
 
-// app.listen(port, () => {
-//
-// });
+//----------------------------------------------------
+//  GET  HTML PAGE
+app.use(express.static(path.join(__dirname)));
 
+app.get("/", async (req, res) => {
+  try {
+    return res.status(200).sendFile(__dirname + "/index.html");
+  } catch (error) {
+    return res.status(500).json({
+      message: "An error has occurred (⋟﹏⋞)",
+    });
+  }
+});
+
+//===========================================
+
+app.listen(port);
 console.log("The server is running at " + url);
+//----------------------------------------------------
+
+//=============================================================
+
+//      HTTP METHODS
+
 //=============================================================
 
 //  POST : adds a new note
@@ -61,6 +81,9 @@ app.get("/notes", async (req, res) => {
   }
 });
 
+// GET --> /notes --- { note: "blah" }
+
+// GET --> / --- <html><html?
 // ------------------------------------------------------------
 
 // GET BY ID: /notes/[id] returns based on id

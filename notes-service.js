@@ -6,7 +6,7 @@ require("dotenv").config();
 const username = process.env.MONGO_USER;
 const pass = process.env.MONGO_PASS;
 const host = process.env.MONGO_HOST;
-console.log(process.env);
+
 const dataBaseLoc = `mongodb+srv://${username}:${pass}@${host}/Placement?retryWrites=true&w=majority`;
 
 mongoose
