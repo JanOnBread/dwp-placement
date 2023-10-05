@@ -1,19 +1,13 @@
 // Setting up MongoDB (our Database)
 const mongoose = require("mongoose");
-
-// "mongodb+srv://janet:CF49WrEQOsdJ3ukN @janet-notes.mspqjdv.mongodb.net/Placement?retryWrites=true&w=majority";
+require("dotenv").config();
 
 // local one
-const username = process.env.USERNAME;
-const pass = process.env.PASS;
-const host = process.env;
-// .MONGO_HOST`mongodb+srv://${username}:${pass}@${host}/Placement?retryWrites=true&w=majority`;
-
-// jcheung801
-// DqoFg2n9NTaEufew
-// cluster0.3wjqms8.mongodb.net
-const dataBaseLoc =
-  "mongodb+srv://jcheung801:DqoFg2n9NTaEufew@cluster0.3wjqms8.mongodb.net/Placement?retryWrites=true&w=majority";
+const username = process.env.MONGO_USER;
+const pass = process.env.MONGO_PASS;
+const host = process.env.MONGO_HOST;
+console.log(process.env);
+const dataBaseLoc = `mongodb+srv://${username}:${pass}@${host}/Placement?retryWrites=true&w=majority`;
 
 mongoose
   .connect(dataBaseLoc, {
@@ -21,7 +15,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("Our database is located at: " + dataBaseLoc);
+    console.log("Our database is connected");
   })
   .catch((error) => {
     console.log("A database was not set up");

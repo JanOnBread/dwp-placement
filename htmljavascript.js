@@ -66,7 +66,7 @@ async function postPatchNotesFunc() {
       throw new Error(`HTTP error: ${response.status} `);
     }
   } catch (error) {
-    // *needs more error handeling here *
+    // *needs more error handling here *
   }
 }
 
