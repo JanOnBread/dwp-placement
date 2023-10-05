@@ -120,25 +120,25 @@
     <!-- SUBMITTING/POSTING A NOTE -->
     <p1>
       <form
-        id="notesFormPostPatch"
-        name="notesFormPostPatch"
+        id="postPatchForm"
+        name="postPatchForm"
         target="dummyFrame"
         onsubmit="this.submit(); this.reset() ;return false;"
       >
-        <label for="posting">Post</label>
+        <label for="postPatchPosting">Post</label>
         <input
           type="radio"
-          name="notesFormPostPatch"
-          id="posting"
+          name="postPatchRadio"
+          id="postPatchPosting"
           value="posting"
           onclick="postOrPatch()"
           checked
         />
-        <label for="patching">Patch</label>
+        <label for="postPatchPatching">Patch</label>
         <input
           type="radio"
-          name="notesFormPostPatch"
-          id="patching"
+          name="postPatchRadio"
+          id="postPatchPatching"
           value="patching"
           onclick="postOrPatch()"
         />
@@ -178,6 +178,7 @@
     </p1>
     <br />
     <!--------------------------------------->
+    <!-- GETTING A NOTE -->
     <hr />
     <p2>
       <h2>Find a Note</h2>
@@ -204,7 +205,7 @@
         <input
           type="radio"
           name="delByIdOrAll"
-          id="byId"
+          id="delById"
           value="Id"
           onclick="expandFormFunc()"
           checked
@@ -213,14 +214,14 @@
         <input
           type="radio"
           name="delByIdOrAll"
-          id="byAll"
+          id="delByAll"
           value="All"
           onclick="expandFormFunc()"
         />
         <br />
-        <section id="DelByIdChoose">
-          <label for="DelbyIdChoose">Choose a note by id</label>
-          <input type="number" id="DelByIdInput" name="DelByIdInput" min="0" />
+        <section id="delByIdChoose">
+          <label for="delbyIdChoose">Choose a note by id</label>
+          <input type="number" id="delByIdInput" name="delByIdInput" min="0" />
         </section>
         <br />
         <button

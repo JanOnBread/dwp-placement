@@ -7,18 +7,18 @@ const messageDisplay = document.querySelector("pre[name = 'message']");
 
 // Get the checkboxes
 
-const postBox = document.getElementById("posting");
-const patchBox = document.getElementById("patching");
+const postBox = document.getElementById("postPatchPosting");
+const patchBox = document.getElementById("postPatchPatching");
 // the sections that contains our id selector
-const patchChooseIdBox = document.getElementById("patchByIdChoose");
+const patchIdBox = document.getElementById("patchByIdChoose");
 
 // Hide or show the id selector depending if patch or post is checked
 function postOrPatch() {
   if (postBox.checked == true) {
-    patchChooseIdBox.style.display = "none";
+    patchIdBox.style.display = "none";
   }
   if (patchBox.checked == true) {
-    patchChooseIdBox.style.display = "block";
+    patchIdBox.style.display = "block";
   }
 }
 
@@ -42,7 +42,7 @@ async function postPatchNotesFunc() {
     HTTPmethod = "POST";
   }
 
-  // sending our request d
+  // sending our request
   try {
     const response = await fetch(urlGloble + id, {
       method: HTTPmethod,
@@ -61,32 +61,31 @@ async function postPatchNotesFunc() {
     // checking if the response went through (in connecting to the server)
     messageDisplay.textContent = jsonData.message;
 
-    patchChooseIdBox.style.display = "none";
+    patchIdBox.style.display = "none";
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status} `);
     }
-    patchChooseIdBox.style.display = "none";
   } catch (error) {
     // *needs more error handeling here *
   }
 }
 
-patchChooseIdBox.style.display = "none";
+patchIdBox.style.display = "none";
 // -------------------------------------------------------------------
 
 // GET
 // Script for getting notes by Id
 
 // listen to Id
-const idChoose = document.querySelector("input[name =getId]");
+const getId = document.querySelector("input[name =getId]");
 
 // where to display the data
 const noteDisplay = document.querySelector("pre[name = 'getNotes']");
 const dateDisplay = document.querySelector("pre[name = 'getDate']");
 
 // listen to id and show that id's notes
-idChoose.addEventListener("change", () => {
-  const id = idChoose.value;
+getId.addEventListener("change", () => {
+  const id = getId.value;
   updateDisplay(id);
 });
 
@@ -121,33 +120,35 @@ async function updateDisplay(id) {
 }
 // when html page is refreshed, show note with id 1
 updateDisplay(0);
-idChoose.value = 0;
+getId.value = 0;
 
 // -------------------------------------------------------------------
 
 // DEL
 
 // Get the checkbox
-const allBox = document.getElementById("byAll");
-const idBox = document.getElementById("byId");
-const expandForm = document.getElementById("DelByIdChoose");
+const delAllBox = document.getElementById("delByAll");
+const delIdBox = document.getElementById("delById");
+const expandDelForm = document.getElementById("delByIdChoose");
 
 function expandFormFunc() {
   // If the checkbox is checked, display the output text
-  if (allBox.checked == true) {
-    expandForm.style.display = "none";
+  if (delAllBox.checked == true) {
+    expandDelForm.style.display = "none";
   }
-  if (idBox.checked == true) {
-    expandForm.style.display = "block";
+  if (delIdBox.checked == true) {
+    expandDelForm.style.display = "block";
   }
 }
+
+const delByIdInput = document.getElementById("delByIdInput");
 
 async function delNotes() {
   // If the checkbox is checked, display the output text
   let id = null;
 
-  if (idBox.checked == true) {
-    id = DelByIdInput.value;
+  if (delIdBox.checked == true) {
+    id = delByIdInput.value;
     console.log(id);
   } else {
     if (
@@ -181,5 +182,5 @@ async function delNotes() {
     console.log(error);
   }
 }
-idBox.value = "checked";
-DelByIdInput.value = "0";
+delIdBox.value = "checked";
+delByIdInput.value = "0";
