@@ -15,10 +15,11 @@ app.use(express.urlencoded({ extended: true }));
 const port = 3002;
 const url = "http://localhost:" + port;
 
-app.listen(port, () => {
-  console.log("The server is running at " + url);
-});
+// app.listen(port, () => {
+//
+// });
 
+console.log("The server is running at " + url);
 //=============================================================
 
 //  POST : adds a new note

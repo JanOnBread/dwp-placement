@@ -100,6 +100,11 @@
         padding: 5px;
         background-color: #ffffff;
       }
+      input[type="radio"] {
+        transform: scale(1.5);
+        accent-color: #312727;
+      }
+
       hr {
         border-top: 1px dashed #312727;
       }
@@ -137,15 +142,19 @@
         <label for="postPatchPatching">Patch</label>
         <input
           type="radio"
+          class="container"
           name="postPatchRadio"
           id="postPatchPatching"
           value="patching"
           onclick="postOrPatch()"
         />
+        <br />
+        <br />
         <section id="patchByIdChoose">
           <label for="patchByIdInput">Choose a note by id</label>
           <input
             type="number"
+            class="container"
             id="patchByIdInput"
             name="patchByIdInput"
             min="0"
@@ -153,7 +162,6 @@
           />
         </section>
 
-        <br />
         <br />
 
         <textarea
@@ -204,6 +212,7 @@
         <label for="byId">ID</label>
         <input
           type="radio"
+          class="container"
           name="delByIdOrAll"
           id="delById"
           value="Id"
@@ -213,11 +222,13 @@
         <label for="byAll">All</label>
         <input
           type="radio"
+          class="container"
           name="delByIdOrAll"
           id="delByAll"
           value="All"
           onclick="expandFormFunc()"
         />
+        <br />
         <br />
         <section id="delByIdChoose">
           <label for="delbyIdChoose">Choose a note by id</label>

@@ -18,7 +18,7 @@ describe("TEST FOR POST", () => {
       .set("Content-Type", "application/json")
       .send(postBody);
     expect(resultPostEmpty.status).toBe(400);
-    expect(resultPostEmpty.text).toBe(
+    expect(resultPostEmpty.body.message).toBe(
       "The note field is empty so a note was not sent (つ﹏<。)"
     );
   });
@@ -30,7 +30,7 @@ describe("TEST FOR POST", () => {
       .set("Content-Type", "application/json")
       .send(postBody);
     expect(resultPostEmpty.status).toBe(400);
-    expect(resultPostEmpty.text).toBe(
+    expect(resultPostEmpty.body.message).toBe(
       "The note field is empty so a note was not sent (つ﹏<。)"
     );
   });
@@ -68,7 +68,9 @@ describe("TEST FOR GET", () => {
   it("/notes/{invalid id} should return an error", async () => {
     const resultGetId = await request(app).get("/notes/" + String(id + 1));
     expect(resultGetId.status).toBe(404);
-    expect(resultGetId.text).toBe("There is no entry with this id ( ＞Д＜ )ゝ");
+    expect(resultGetId.body.message).toBe(
+      "There is no entry with this id ( ＞Д＜ )ゝ"
+    );
   });
 });
 
@@ -76,6 +78,19 @@ describe("TEST FOR GET", () => {
 // TEST FOR UPDATE
 
 describe("TEST FOR UPDATE ", () => {
+  it("Should return an error if the **body** is empty", async () => {
+    const updateEmptyBody = { notes: "" }; // creating an empty note
+    const resultPatchEmpty = await request(app)
+      .patch("/notes/" + id)
+      .set("Content-Type", "application/json")
+      .send(updateEmptyBody);
+
+    expect(resultPatchEmpty.status).toBe(400);
+    expect(resultPatchEmpty.body.message).toBe(
+      "The note field is empty the note was not updated (つ﹏<。)"
+    );
+  });
+
   it("/notes/{id} with a body, should update the note", async () => {
     const updateBody = {
       notes: "this is a update",
@@ -86,7 +101,7 @@ describe("TEST FOR UPDATE ", () => {
       .send(updateBody);
 
     expect(resultUpdate.status).toBe(200);
-    expect(resultUpdate.text).toBe(
+    expect(resultUpdate.body.message).toBe(
       "this note has been updated successfully ٩(`･ω･´)و"
     );
 
@@ -102,7 +117,7 @@ describe("TEST FOR DELETE ", () => {
   it("/notes/{id} should delete notes based on an id", async () => {
     resultDelId = await request(app).delete("/notes/" + id);
     expect(resultDelId.status).toBe(200);
-    expect(resultDelId.text).toBe(
+    expect(resultDelId.body.message).toBe(
       "this note has been deleted successfully deleted ٩(`･ω･´)و"
     );
   });
@@ -111,7 +126,9 @@ describe("TEST FOR DELETE ", () => {
   it("/notes should delete all notes", async () => {
     resultDelAll = await request(app).delete("/notes");
     expect(resultDelAll.status).toBe(200);
-    expect(resultDelAll.text).toBe("All notes have been deleted ٩(`･ω･´)و");
+    expect(resultDelAll.body.message).toBe(
+      "All notes have been deleted ٩(`･ω･´)و"
+    );
   });
 });
 

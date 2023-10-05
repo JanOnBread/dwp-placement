@@ -1,10 +1,18 @@
 // Setting up MongoDB (our Database)
 const mongoose = require("mongoose");
 
-const dataBaseLoc =
-  // "mongodb+srv://janet:CF49WrEQOsdJ3ukN @janet-notes.mspqjdv.mongodb.net/Placement?retryWrites=true&w=majority";
+// "mongodb+srv://janet:CF49WrEQOsdJ3ukN @janet-notes.mspqjdv.mongodb.net/Placement?retryWrites=true&w=majority";
 
-  // local one
+// local one
+const username = process.env.USERNAME;
+const pass = process.env.PASS;
+const host = process.env;
+// .MONGO_HOST`mongodb+srv://${username}:${pass}@${host}/Placement?retryWrites=true&w=majority`;
+
+// jcheung801
+// DqoFg2n9NTaEufew
+// cluster0.3wjqms8.mongodb.net
+const dataBaseLoc =
   "mongodb+srv://jcheung801:DqoFg2n9NTaEufew@cluster0.3wjqms8.mongodb.net/Placement?retryWrites=true&w=majority";
 
 mongoose
