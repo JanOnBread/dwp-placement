@@ -3,16 +3,86 @@ urlGloble = "http://localhost:3002/notes/";
 const messageDisplay = document.querySelector("pre[name = 'message']");
 
 // -------------------------------------------------------------------
+// POSTING AND PATCHING
+
+// Get the checkboxes
+
+const postBox = document.getElementById("posting");
+const patchBox = document.getElementById("patching");
+// the sections that contains our id selector
+const patchChooseIdBox = document.getElementById("patchByIdChoose");
+
+// Hide or show the id selector depending if patch or post is checked
+function postOrPatch() {
+  if (postBox.checked == true) {
+    patchChooseIdBox.style.display = "none";
+  }
+  if (patchBox.checked == true) {
+    patchChooseIdBox.style.display = "block";
+  }
+}
+
+// Sending a post/patch request
+
+// grabbing elements
+//  id (for patching)
+const idForPatch = document.getElementById("patchByIdInput");
+//  notes
+const postPatchNote = document.getElementById("postPatchNotes");
+
+async function postPatchNotesFunc() {
+  let id = null;
+  let HTTPmethod = null;
+
+  if (patchBox.checked == true) {
+    id = patchByIdInput.value;
+    HTTPmethod = "PATCH";
+  } else {
+    id = "";
+    HTTPmethod = "POST";
+  }
+
+  // sending our request d
+  try {
+    const response = await fetch(urlGloble + id, {
+      method: HTTPmethod,
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+      },
+      body: JSON.stringify({
+        notes: postPatchNote.value,
+      }),
+    });
+
+    const jsonData = await response.json();
+
+    // checking if the response went through (in connecting to the server)
+    messageDisplay.textContent = jsonData.message;
+
+    patchChooseIdBox.style.display = "none";
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status} `);
+    }
+    patchChooseIdBox.style.display = "none";
+  } catch (error) {
+    // *needs more error handeling here *
+  }
+}
+
+patchChooseIdBox.style.display = "none";
+// -------------------------------------------------------------------
 
 // GET
 // Script for getting notes by Id
 
 // listen to Id
-const idChoose = document.querySelector("input");
+const idChoose = document.querySelector("input[name =getId]");
 
 // where to display the data
-const noteDisplay = document.querySelector("pre[name = 'notes']");
-const dateDisplay = document.querySelector("pre[name = 'date']");
+const noteDisplay = document.querySelector("pre[name = 'getNotes']");
+const dateDisplay = document.querySelector("pre[name = 'getDate']");
 
 // listen to id and show that id's notes
 idChoose.addEventListener("change", () => {
@@ -51,8 +121,7 @@ async function updateDisplay(id) {
 }
 // when html page is refreshed, show note with id 1
 updateDisplay(0);
-idChoose.value = "0";
-//
+idChoose.value = 0;
 
 // -------------------------------------------------------------------
 
@@ -114,25 +183,3 @@ async function delNotes() {
 }
 idBox.value = "checked";
 DelByIdInput.value = "0";
-///==============================
-// working code
-// if (error === "HTTP error") {
-//     poemDisplay.textContent = `Could not fetch verse: ${error}`;
-//   } else {
-//     poemDisplay.textContent = `Could not fetch verse: ${error}`;
-//   }
-
-// const messageDisplay = document.querySelector("pre[name = 'message']");
-
-// function messageUpdate()  {
-
-//   notesFormPost.addEventListener("submit", function(event) {
-
-//     fetch(urlGloble, {
-//     method: "POST",
-//   }
-//    )
-
-//   messageDisplay.textContent = jsonData.message;
-
-// }
