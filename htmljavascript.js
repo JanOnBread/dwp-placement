@@ -1,14 +1,16 @@
-// removes previous note
+// defining constants
 urlGloble = "http://localhost:3002/notes/";
 const messageDisplay = document.querySelector("pre[name = 'message']");
 
 // -------------------------------------------------------------------
 // POSTING AND PATCHING
+// -------------------------------------------------------------------
 
 // Get the checkboxes
 
 const postBox = document.getElementById("postPatchPosting");
 const patchBox = document.getElementById("postPatchPatching");
+
 // the sections that contains our id selector
 const patchIdBox = document.getElementById("patchByIdChoose");
 
@@ -30,7 +32,9 @@ const idForPatch = document.getElementById("patchByIdInput");
 //  notes
 const postPatchNote = document.getElementById("postPatchNotes");
 
+// Posting ot patching our note to the database
 async function postPatchNotesFunc() {
+  // checking to do a post or a patch request
   let id = null;
   let HTTPmethod = null;
 
@@ -70,10 +74,12 @@ async function postPatchNotesFunc() {
   }
 }
 
+// adding default display options
 patchIdBox.style.display = "none";
 // -------------------------------------------------------------------
-
 // GET
+// -------------------------------------------------------------------
+
 // Script for getting notes by Id
 
 // listen to Id
@@ -95,7 +101,6 @@ async function updateDisplay(id) {
   try {
     const response = await fetch(urlGloble + id, {
       method: "get",
-      //dataType: "json",
       mode: "cors",
     });
 
@@ -111,8 +116,6 @@ async function updateDisplay(id) {
     noteDisplay.textContent = jsonData.notes;
     dateDisplay.textContent = jsonData.date;
     messageDisplay.textContent = "";
-
-    // =========================================
   } catch (error) {
     noteDisplay.textContent = `Could not fetch note \n ${error}`;
     dateDisplay.textContent = "";
@@ -125,6 +128,8 @@ getId.value = 0;
 // -------------------------------------------------------------------
 
 // DEL
+
+// -------------------------------------------------------------------
 
 // Get the checkbox
 const delAllBox = document.getElementById("delByAll");
@@ -162,6 +167,7 @@ async function delNotes() {
     id = "";
   }
 
+  // sending our del request to the server
   try {
     const response = await fetch(urlGloble + id, {
       method: "DELETE",
