@@ -1,0 +1,8 @@
+title: Notes Page
+summary: A simple page for managing notes.
+description: This is a simple API for creating (POST), updating (PATCH), recalling (GET) and deleting (DELETE) notes.
+termsOfService: N/A
+contact:
+  name: n/a
+  url: n/a
+  email: n/a
