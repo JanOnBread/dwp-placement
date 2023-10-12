@@ -5,15 +5,17 @@
 ## Description 
 "Notes" is a simple page where you can store, recall, update and delete notes. This is a simple project I made while on placement at DWP to learn some foundational skills in softwere enginering. 
 
+
 Techologies used within this project: 
 * [Express](https://expressjs.com/) : Web framework for node js
-* [SuperTest](https://www.npmjs.com/package/supertest) : Used to HTTP tesing
-* [MongoDB](https://www.mongodb.com/) : A databse used to store our data/notes 
+* [SuperTest](https://www.npmjs.com/package/supertest) : Used to HTTP/intergration tesing
+* [MongoDB](https://www.mongodb.com/) : A databse used to store our data/notes
+
 
 ***
 ## Usage
 
-### Posting or updating a note
+### _Posting or updating a note_
 At the top, first choose wether you want to post or patch a note. 
 
 * Posting: Adding a new note into our database
@@ -24,17 +26,17 @@ In the text box below, write down your note or what you want to updated to be. P
 When posting, and Id is automatiical assigened. 
 
 
-### Gettting a note
+### _Gettting a note_
 In the "Find a note" section, use the choose the note you want to retrive based on it's id. The box should alomatically update everytime you chnage number. 
 
 
-### Deleting a note 
+### _Deleting a note_
 You can first choose to delete a note by ID or to delete all notes
 * by all: Delete all notes within our databse. A pop up message will apprear confirming you want to choose this option as this can't be undone. 
 * by id: Delete a note based on it's id
 
 
-### Log from server box 
+### _Log from server box_
 This box displays messages from the server, it will diplay something every time an action has been taken. It's suggested that you offten check this boxes to confirm an action has been taken or an error message on why it has not. 
 
 
