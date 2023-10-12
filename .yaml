@@ -1,0 +1,132 @@
+openapi: 3.1.0
+info:
+  title: Notes Page
+  description: |-
+    This is a simple API for creating (POST), updating (PATCH), recalling
+    (GET) and deleting (DELETE) notes. Within this API, we use node.js, express.js and mongoDB.
+
+    This is simple project I done while at my placement at DWP.
+
+  termsOfService: https://github.com/JanOnBread/dwp-placement/tree/main#readme
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: GitHub Page
+  url: https://github.com/JanOnBread
+
+  #  This is a comment
+
+servers:
+  - url: localhost:3002/
+tags:
+  - name: Notes
+    description: Eveything you can do with notes!
+
+paths:
+  /:
+    get:
+      tags:
+        - Notes
+      summary: Shows you the main page
+      description: Brings you to the main page (index.html) where you can access all commands (posting, retriving, updating and deleteing) to do with the notes
+      operationId: getIndex
+      #====================
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error occured when displaying index.html
+  #=============================
+  /notes:
+    get:
+      tags:
+        - Notes
+      summary: Shows you all notes in our DB
+      description: Shows you all our notes stired within our database (MongoDB)
+      operationId: getAllNotes
+
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error occured when displaying index.html
+    #=================
+    post:
+      tags:
+        - Notes
+      summary: Posts a note into our database
+      description: Add a new new note into our mongoDB. This post request is sent to /notes after the first "submit" button is pressed on index.html
+      operationId: postNote
+      parameters:
+        - name: notes
+          in: path
+          description: Note you want to store
+          required: true
+          schema:
+            type: string
+            format: int64
+      requestBody:
+        description: To create a new note
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Notes"
+        required: true
+      responses:
+        "201":
+          description: Successful operation - Note is posted
+
+        "400":
+          description: Notes field is empty
+
+        "500":
+          description: Note posting is unsuccseful and thus a note was not posted
+
+  #=====
+
+  /notes/{id}:
+    get:
+      tags:
+        - Notes
+      summary: Get a note by ID
+      description: Finds a note within our MOngo
+      responses:
+        "200":
+          description: Successful operation
+        "404":
+          description: there is note with this id
+
+    #=====
+
+    patch:
+      tags:
+        - Notes
+      summary: Get a note by ID
+      description: Finds a note within our MOngo
+      responses:
+        "200":
+          description: Successful operation
+        "404":
+          description: there is note with this id
+
+#===========================
+
+components:
+  schemas:
+    Notes:
+      required:
+        - notes
+      type: object
+      properties:
+        _id:
+          type: integer
+          format: int64
+          examples: [0]
+        date:
+          type: string
+          examples: [Thu Oct 05 2023 13:56:18 GMT+0100 (British Summer Time)]
+        notes:
+          type: string
+          examples: [This is my first note!]

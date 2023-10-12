@@ -81,9 +81,6 @@ app.get("/notes", async (req, res) => {
   }
 });
 
-// GET --> /notes --- { note: "blah" }
-
-// GET --> / --- <html><html?
 // ------------------------------------------------------------
 
 // GET BY ID: /notes/[id] returns based on id
@@ -96,7 +93,7 @@ app.get("/notes/:_id", async (req, res) => {
       .status(404)
       .json({ message: "There is no entry with this id ( ＞Д＜ )ゝ" });
   } else {
-    return res.send(noteById);
+    return res.status(200).send(noteById);
   }
 });
 
