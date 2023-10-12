@@ -30,8 +30,22 @@ Key skills demonstrated :
 > [!IMPORTANT]
 > Before setting up locally, you will need a Mongo account.
 
-First, clone this repository into your local directory. There are many ways of doing this, most of which can be found under "<Code>" on Github when you view the repository under the "<> Code" tab .
-A recommend
+1. **First, clone this repository into your local directory.**
+   There are many ways of doing this, most of which can be found in "\<Code\>" on Github when you view the repository under the "<> Code" tab.
+
+   To install using git, run the following command into you command prompt when you are in your desired directory.
+
+   '''
+   git clone https://github.com/JanOnBread/Notes.git
+   '''
+
+1. **Add your MongoDB server**
+   Locate the file "note-service.js" and, near the top, replace 'dataBaseLoc' with the url of your MongoDB.
+   It should look like the following with your own url.
+
+   ```javascript
+   const dataBaseLoc = mongodb+srv://<username>:<password>@<host>/?retryWrites=true&w=majority
+   ```
 
 ### _Externally_
 
