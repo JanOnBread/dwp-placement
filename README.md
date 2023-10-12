@@ -5,6 +5,11 @@
 ## Description 
 "Notes" is a simple page where you can store, recall, update and delete notes. This is a simple project I made while on placement at DWP to learn some foundational skills in softwere enginering. 
 
+Techologies used within this project: 
+* [Express](https://expressjs.com/) : Web framework for node js
+* [SuperTest](https://www.npmjs.com/package/supertest) : Used to HTTP tesing
+* [MongoDB](https://www.mongodb.com/) : A databse used to store our data/notes 
+
 ***
 ## Usage
 
