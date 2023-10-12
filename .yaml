@@ -1,3 +1,6 @@
+# ============================================
+#   Setting
+# ============================================
 openapi: 3.1.0
 info:
   title: Notes Page
@@ -11,54 +14,60 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.11
+  version: 1.0
 externalDocs:
   description: GitHub Page
   url: https://github.com/JanOnBread
-
-  #  This is a comment
 
 servers:
   - url: localhost:3002/
 tags:
   - name: Notes
-    description: Eveything you can do with notes!
+    description: Everything you can do with notes!
+
+# ============================================
+#   Paths
+# ============================================
 
 paths:
+  #---------------------------------------------
+  #   /
+  #---------------------------------------------
   /:
     get:
       tags:
         - Notes
       summary: Shows you the main page
-      description: Brings you to the main page (index.html) where you can access all commands (posting, retriving, updating and deleteing) to do with the notes
+      description: Brings you to the main page (index.html) where you can access all commands (posting, retrieving, updating and deleting) to do with the notes
       operationId: getIndex
-      #====================
       responses:
         "200":
           description: Successful operation
         "500":
-          description: Error occured when displaying index.html
-  #=============================
+          description: Error occurred when displaying index.html
+
+  #---------------------------------------------
+  #   /notes
+  #---------------------------------------------
   /notes:
     get:
       tags:
         - Notes
-      summary: Shows you all notes in our DB
-      description: Shows you all our notes stired within our database (MongoDB)
+      summary: Shows you ALL notes in our MongoDB
+      description: Shows you all our notes stored within our database (MongoDB)
       operationId: getAllNotes
 
       responses:
         "200":
           description: Successful operation
         "500":
-          description: Error occured when displaying index.html
-    #=================
+          description: Error occurred when displaying displaying all notes.
+    #---------------------------------------------
     post:
       tags:
         - Notes
       summary: Posts a note into our database
       description: Add a new new note into our mongoDB. This post request is sent to /notes after the first "submit" button is pressed on index.html
-      operationId: postNote
       parameters:
         - name: notes
           in: path
@@ -82,36 +91,65 @@ paths:
           description: Notes field is empty
 
         "500":
-          description: Note posting is unsuccseful and thus a note was not posted
+          description: Note posting is unsuccessful and thus a note was not posted
+    #---------------------------------------------
+    delete:
+      tags:
+        - Notes
+      summary: Deletes all notes
+      description: Deletes all entries within our mongoDB when you select this option on the index.html page
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: error occurred and the no notes were deleted
 
-  #=====
-
+  #---------------------------------------------
+  #   /notes/ {id}
+  #---------------------------------------------
   /notes/{id}:
     get:
       tags:
         - Notes
       summary: Get a note by ID
-      description: Finds a note within our MOngo
+      description: Finds a note within our MongoDB with a specific ID
       responses:
         "200":
           description: Successful operation
         "404":
-          description: there is note with this id
+          description: there is no note with this id
 
-    #=====
+    #---------------------------------------------
 
     patch:
       tags:
         - Notes
-      summary: Get a note by ID
-      description: Finds a note within our MOngo
+      summary: Update a note by ID
+      description: Finds a note within our MongoDB based on id and update it by sending a body with a new request
+      responses:
+        "200":
+          description: Successful operation
+        "400":
+          description: the notes field was empty
+        "404":
+          description: there is no note with this id
+        "500":
+          description: error occurred and the note was not updated
+
+    #---------------------------------------------
+    delete:
+      tags:
+        - Notes
+      summary: Delete a note by Id
+      description: Finds a note within our MongoDB by id then delete that note
       responses:
         "200":
           description: Successful operation
         "404":
-          description: there is note with this id
-
-#===========================
+          description: there is no note with this id
+        "500":
+          description: error occurred and the note was not deleted
+#---------------------------------------------
 
 components:
   schemas:
