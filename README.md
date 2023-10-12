@@ -30,7 +30,8 @@ Key skills demonstrated :
 > [!IMPORTANT]
 > Before setting up locally, you will need a Mongo account.
 
-First,
+First, clone this repository into your local directory. There are many ways of doing this, most of which can be found under "<Code>" on Github when you view the repository under the "<> Code" tab .
+A recommend
 
 ### _Externally_
 
