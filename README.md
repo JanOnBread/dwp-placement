@@ -16,30 +16,30 @@ Technologies used within this project:
 
 ## Usage
 
-### Posting or updating a note
+### _Posting or updating a note_
 
-At the top, first choose wether you want to post or patch a note.
+At the top, first choose wether you want to POST or PATCH a note.
 
-- Posting: Adding a new note into our database
-- Patching: Updating a note within our database based on a id
+- _Posting_: Adding a new note into our database
+- _Patching_: Updating a note within our database based on a id
 
-In the text box below, write down your note or what you want to updated to be. Press submit to then post or patch the note. Please look within the "log from server" box to see if note posting/patching was successful.
+In the text box below, write down your note or what you want a note to be updated to be. Press submit to then this will send a POST or PATCH request Please look within the "log from server" box to see if note posting/patching was successful.
+If the textbox is empty then a note won't be posted/patched even when hitting submit. A message in the "server long" box should display this error.
 
-When posting, and Id is automatic assigned.
+> [!NOTE]
+> When posting, an Id and date is automatic assigned. The Id will be randomly generated based on (max ID in database) + 1. This can mean that come some id's won't be assigned to a note. For example, if there are 3 notes in our database (0,1,2) if we delete note 1 and then create a new note, the new note will be assigned a ID of 3 so we we will have notes with ID (0,2,3).
 
-### Getting a note
-
-### Getting a note
+### _Finding a note_
 
 In the "Find a note" section, use the choose the note you want to retrieve based on it's id. The box should automatically update every time you change number.
 
-### Deleting a note
+### _Deleting a note_
 
 You can first choose to delete a note by ID or to delete all notes
 
 - by all: Delete all notes within our database. A pop up message will appear confirming you want to choose this option as this can't be undone.
 - by id: Delete a note based on it's id
 
-### Log from server box
+### _Log from server box_
 
 This box displays messages from the server, it will display something every time an action has been taken. It's suggested that you often check this boxes to confirm an action has been taken or an error message on why it has not.
