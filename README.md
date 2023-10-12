@@ -9,8 +9,32 @@
 Technologies used within this project:
 
 - [Express](https://expressjs.com/) : Web framework for node js
-- [SuperTest](https://www.npmjs.com/package/supertest) : Used to HTTP testing
+- [SuperTest](https://www.npmjs.com/package/supertest) : Used to HTTP/integrating testing
 - [MongoDB](https://www.mongodb.com/) : A database used to store our data/notes
+
+Key skills demonstrated :
+
+- Writing a backend and frontend service using Javascript
+- Creating a interactive page with HTML and CSS
+- Writing integration tests with SuperTest
+- Creating a local server using Express to "talk to" our database
+- Setting up and using a database using MongoDB
+- Applying HTTP methods
+
+---
+
+## Installing and Setup
+
+### _Locally_
+
+> [!IMPORTANT]
+> Before setting up locally, you will need a Mongo account.
+
+First,
+
+### _Externally_
+
+This is currently not available.
 
 ---
 
@@ -20,14 +44,14 @@ Technologies used within this project:
 
 At the top, first choose wether you want to POST or PATCH a note.
 
-- _Posting_: Adding a new note into our database
-- _Patching_: Updating a note within our database based on a id
+- **Posting**: Adding a new note into our database
+- **Patching**: Updating a note within our database based on a id
 
 In the text box below, write down your note or what you want a note to be updated to be. Press submit to then this will send a POST or PATCH request Please look within the "log from server" box to see if note posting/patching was successful.
 If the textbox is empty then a note won't be posted/patched even when hitting submit. A message in the "server long" box should display this error.
 
 > [!NOTE]
-> When posting, an Id and date is automatic assigned. The Id will be randomly generated based on (max ID in database) + 1. This can mean that come some id's won't be assigned to a note. For example, if there are 3 notes in our database (0,1,2) if we delete note 1 and then create a new note, the new note will be assigned a ID of 3 so we we will have notes with ID (0,2,3).
+> When posting, an Id and date is automatic assigned. The Id will be randomly generated based on (max ID in database) + 1. This can mean that come some id's won't be assigned to a note. For example, if there are 3 notes in our database (0,1,2) if we delete note 1 and then create a new note, the new note will be assigned a ID of 3 so we will have notes with ID (0,2,3).
 
 ### _Finding a note_
 
@@ -37,8 +61,8 @@ In the "Find a note" section, use the choose the note you want to retrieve based
 
 You can first choose to delete a note by ID or to delete all notes
 
-- by all: Delete all notes within our database. A pop up message will appear confirming you want to choose this option as this can't be undone.
-- by id: Delete a note based on it's id
+- **By all**: Delete all notes within our database. A pop up message will appear confirming you want to choose this option as this can't be undone.
+- **By id**: Delete a note based on it's id
 
 ### _Log from server box_
 
