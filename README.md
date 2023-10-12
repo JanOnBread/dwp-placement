@@ -31,7 +31,7 @@ Key skills demonstrated :
 > Before setting up locally, you will need a Mongo account.
 
 1. **First, clone this repository into your local directory.**
-   There are many ways of doing this, most of which can be found in "\<Code\>" on Github when you view the repository under the "<> Code" tab.
+   There are many ways of doing this, most of which can be found in "\<Code\>" on Github when you view the repository under the "\<\> Code" tab.
 
    To install using git, run the following command into you command prompt when you are in your desired directory.
 
