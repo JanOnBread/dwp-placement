@@ -9,32 +9,55 @@ const path = require("path");
 app.use(
   cors({
     credentials: true,
+    orgin: ["https://editor-next.swagger.io/", "https://app.swaggerhub.com"],
   })
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// const cors = {
+//   orgin: [ "https://editor-next.swagger.io/","https://app.swaggerhub.com"]
+// }
+// app.use(function (req, res, next) {
+//   res.header(
+//     "Access-Control-Allow-Origin",
+
+//   );
+//   res.header("Access-Control-Allow-Credentials", true);
+//   next();
+// });
+
 const port = 3002;
 const url = "https://localhost:" + port;
 
+//===========================================
+
+app.listen(port);
+console.log("The server is running at " + url);
+
 //******
 
-// Open API stuff
-// const OpenApiValidator = require("express-openapi-validator");
-// // installing the middleware
-// app.use(
-//   OpenApiValidator.middleware({
-//     apiSpec: "openapi.yaml",
-//     validateRequests: true, // (default)
-//     validateResponses: true, // false by default
-//   })
-// );
+//Open API stuff
+const OpenApiValidator = require("express-openapi-validator");
+
+app.use(
+  OpenApiValidator.middleware({
+    ignoreUndocumented: true,
+    apiSpec: "openapi.yaml",
+    validateRequests: true, // (default)
+    validateResponses: true, // false by default
+  })
+);
+
+// installing the middleware
 //----------------------------------------------------
 //  GET  HTML PAGE
 app.use(express.static(path.join(__dirname)));
 
 app.get("/", async (req, res) => {
   try {
+    // this line under is not showing...???
+    console.log("a get request was made: retrieving index.html page");
     return res
       .status(200)
       .sendFile(__dirname + "/index.html")
@@ -48,10 +71,6 @@ app.get("/", async (req, res) => {
   }
 });
 
-//===========================================
-
-app.listen(port);
-console.log("The server is running at " + url);
 //----------------------------------------------------
 
 //=============================================================
@@ -187,6 +206,15 @@ app.delete("/notes/", async (req, res) => {
       message: "An error has occurred - all notes where note deleted (⋟﹏⋞)",
     });
   }
+});
+
+//======================================================
+app.use((err, req, res, next) => {
+  // format errors
+  res.status(err.status || 500).json({
+    message: err.message,
+    errors: err.errors,
+  });
 });
 //=====================================================
 

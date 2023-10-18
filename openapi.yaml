@@ -20,7 +20,7 @@ externalDocs:
   url: https://github.com/JanOnBread
 
 servers:
-  - url: https://localhost:3002/
+  - url: http://localhost:3002/
 tags:
   - name: Notes
     description: Everything you can do with notes!
@@ -43,10 +43,7 @@ paths:
       responses:
         "200":
           description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/serverMessage"
+
         "500":
           description: Error occurred when displaying index.html
           content:
@@ -70,7 +67,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/submittedNotes"
+                type: array
+                items:
+                  $ref: "#/components/schemas/submittedNotes"
         "500":
           description: Error occurred when displaying displaying all notes.
           content:
@@ -116,7 +115,7 @@ paths:
       tags:
         - Notes
       summary: Deletes all notes
-      description: Deletes all entries within our mongoDB when you select this option on the index.html page
+      description: Deletes aall entries within our mongoDB when you select this option on the index.html page
       operationId: delAllNotes
       responses:
         "200":
