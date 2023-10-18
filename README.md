@@ -93,3 +93,9 @@ You can first choose to delete a note by ID or to delete all notes
 ### _Log from server box_
 
 This box displays messages from the server, it will display something every time an action has been taken. It's suggested that you often check this boxes to confirm an action has been taken or an error message on why it has not.
+
+---
+
+## Testing 
+
+
