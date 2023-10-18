@@ -35,6 +35,7 @@ paths:
   #   /
   #---------------------------------------------
   /:
+    # GET
     get:
       tags:
         - Notes
@@ -59,6 +60,7 @@ paths:
   #   /notes
   #---------------------------------------------
   /notes:
+    # GET
     get:
       tags:
         - Notes
@@ -81,6 +83,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/serverMessage"
     #---------------------------------------------
+    # POST
     post:
       tags:
         - Notes
@@ -115,6 +118,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/serverMessage"
     #---------------------------------------------
+    # DELETE
     delete:
       tags:
         - Notes
@@ -129,7 +133,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/serverMessage"
         "500":
-          description: error occurred and the no notes were deleted
+          description: Error occurred and the no notes were deleted
           content:
             application/json:
               schema:
@@ -138,6 +142,7 @@ paths:
   #   /notes/ {id}
   #---------------------------------------------
   /notes/{id}:
+    # GET
     get:
       tags:
         - Notes
@@ -165,7 +170,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/serverMessage"
     #---------------------------------------------
-
+    # PATCH
     patch:
       tags:
         - Notes
@@ -212,6 +217,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/serverMessage"
     #---------------------------------------------
+    # DELETE
     delete:
       tags:
         - Notes
@@ -245,7 +251,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/serverMessage"
 #---------------------------------------------
-
+# DEFINING SCHEMAS
 components:
   schemas:
     submittedNotes:

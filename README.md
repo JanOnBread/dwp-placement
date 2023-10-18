@@ -96,6 +96,9 @@ This box displays messages from the server, it will display something every time
 
 ---
 
-## Testing 
+## Testing
 
+You can test the code using `notes.integration.test.js`(using SuperTest) and/or `openapi.yaml`(using open API). It's recommend to use Open API for testing as it is more visual.
 
+- _With Open API_: When the server is running, go to `http://localhost:3002/openapi'.
+- _With SuperTest_: In your command prompt , type the following `jest notes.integration.test.js`

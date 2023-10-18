@@ -12,7 +12,7 @@ let id = null;
 
 describe("TEST FOR POST", () => {
   it("Should return an error if the **body** is empty", async () => {
-    const postBody = {}; // creating an empty note
+    const postBody = { notes: "" }; // creating an empty note
     const resultPostEmpty = await request(app)
       .post("/notes")
       .set("Content-Type", "application/json")

@@ -22,7 +22,11 @@ app.use(
   })
 );
 
-app.listen(port);
+app.listen(port, function (err) {
+  if (err) console.log("Error in server setup");
+  console.log("Server listening on Port", port);
+});
+
 console.log("The server is running at " + url);
 console.log("Open API address:" + url + "/openapi");
 //===========================================
