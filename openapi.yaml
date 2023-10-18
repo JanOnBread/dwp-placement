@@ -1,7 +1,7 @@
 # ============================================
 #   Setting
 # ============================================
-openapi: 3.1.0
+openapi: "3.1.0"
 info:
   title: Notes Page
   description: |-
@@ -14,13 +14,13 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0
+  version: 1.0.0
 externalDocs:
   description: GitHub Page
   url: https://github.com/JanOnBread
 
 servers:
-  - url: localhost:3002/
+  - url: https://localhost:3002/
 tags:
   - name: Notes
     description: Everything you can do with notes!
@@ -43,8 +43,16 @@ paths:
       responses:
         "200":
           description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/serverMessage"
         "500":
           description: Error occurred when displaying index.html
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/serverMessage"
 
   #---------------------------------------------
   #   /notes
@@ -56,54 +64,73 @@ paths:
       summary: Shows you ALL notes in our MongoDB
       description: Shows you all our notes stored within our database (MongoDB)
       operationId: getAllNotes
-
       responses:
         "200":
           description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/submittedNotes"
         "500":
           description: Error occurred when displaying displaying all notes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/serverMessage"
     #---------------------------------------------
     post:
       tags:
         - Notes
       summary: Posts a note into our database
       description: Add a new new note into our mongoDB. This post request is sent to /notes after the first "submit" button is pressed on index.html
-      parameters:
-        - name: notes
-          in: path
-          description: Note you want to store
-          required: true
-          schema:
-            type: string
-            format: int64
+      operationId: postNotes
       requestBody:
         description: To create a new note
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Notes"
+              $ref: "#/components/schemas/notes"
         required: true
       responses:
         "201":
           description: Successful operation - Note is posted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/serverMessage"
 
         "400":
           description: Notes field is empty
-
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/serverMessage"
         "500":
           description: Note posting is unsuccessful and thus a note was not posted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/serverMessage"
     #---------------------------------------------
     delete:
       tags:
         - Notes
       summary: Deletes all notes
       description: Deletes all entries within our mongoDB when you select this option on the index.html page
+      operationId: delAllNotes
       responses:
         "200":
           description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/serverMessage"
         "500":
           description: error occurred and the no notes were deleted
-
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/serverMessage"
   #---------------------------------------------
   #   /notes/ {id}
   #---------------------------------------------
@@ -113,12 +140,27 @@ paths:
         - Notes
       summary: Get a note by ID
       description: Finds a note within our MongoDB with a specific ID
+      operationId: getNoteById
+      parameters:
+        - name: id
+          in: path
+          description: Id of the note you want to retrieve
+          required: true
+          schema:
+            type: integer
       responses:
         "200":
           description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/submittedNotes"
         "404":
           description: there is no note with this id
-
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/serverMessage"
     #---------------------------------------------
 
     patch:
@@ -126,41 +168,90 @@ paths:
         - Notes
       summary: Update a note by ID
       description: Finds a note within our MongoDB based on id and update it by sending a body with a new request
+      operationId: patchNoteById
+      parameters:
+        - name: id
+          in: path
+          description: Id of the note you want to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: To create a new note
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/notes"
+        required: true
       responses:
         "200":
           description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/serverMessage"
         "400":
           description: the notes field was empty
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/serverMessage"
         "404":
-          description: there is no note with this id
+          description: There is no note with this id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/serverMessage"
         "500":
           description: error occurred and the note was not updated
-
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/serverMessage"
     #---------------------------------------------
     delete:
       tags:
         - Notes
       summary: Delete a note by Id
       description: Finds a note within our MongoDB by id then delete that note
+      operationId: delNoteByID
+      parameters:
+        - name: id
+          in: path
+          description: Id of the note you want to delete
+          required: true
+          schema:
+            type: integer
       responses:
         "200":
           description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/serverMessage"
         "404":
           description: there is no note with this id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/serverMessage"
         "500":
           description: error occurred and the note was not deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/serverMessage"
 #---------------------------------------------
 
 components:
   schemas:
-    Notes:
+    submittedNotes:
       required:
         - notes
       type: object
       properties:
         _id:
           type: integer
-          format: int64
           examples: [0]
         date:
           type: string
@@ -168,3 +259,16 @@ components:
         notes:
           type: string
           examples: [This is my first note!]
+    notes:
+      required:
+        - notes
+      type: object
+      properties:
+        notes:
+          type: string
+          examples: [This is an note!]
+    serverMessage:
+      type: object
+      properties:
+        message:
+          type: string

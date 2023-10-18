@@ -20,6 +20,7 @@ Key skills demonstrated :
 - Creating a local server using Express to "talk to" our database
 - Setting up and using a database using MongoDB
 - Applying HTTP methods
+- Writing an affective readme page and a open api document
 
 ---
 
@@ -55,7 +56,7 @@ Key skills demonstrated :
    npm run notes.js
    ```
 
-   and the page should run locally on `local host "http://localhost:3002"`.Terminate running code from the console to stop the local server.
+   and the page should run locally on `http://localhost:3002`.Terminate running code from the console to stop the local server.
 
 ### _Externally_
 

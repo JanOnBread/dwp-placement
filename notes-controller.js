@@ -13,16 +13,34 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const port = 3002;
-const url = "http://localhost:" + port;
 
+const port = 3002;
+const url = "https://localhost:" + port;
+
+//******
+
+// Open API stuff
+// const OpenApiValidator = require("express-openapi-validator");
+// // installing the middleware
+// app.use(
+//   OpenApiValidator.middleware({
+//     apiSpec: "openapi.yaml",
+//     validateRequests: true, // (default)
+//     validateResponses: true, // false by default
+//   })
+// );
 //----------------------------------------------------
 //  GET  HTML PAGE
 app.use(express.static(path.join(__dirname)));
 
 app.get("/", async (req, res) => {
   try {
-    return res.status(200).sendFile(__dirname + "/index.html");
+    return res
+      .status(200)
+      .sendFile(__dirname + "/index.html")
+      .json({
+        message: "Index page is up!",
+      });
   } catch (error) {
     return res.status(500).json({
       message: "An error has occurred (⋟﹏⋞)",
@@ -170,5 +188,6 @@ app.delete("/notes/", async (req, res) => {
     });
   }
 });
+//=====================================================
 
 module.exports = app;
