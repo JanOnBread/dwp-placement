@@ -1,7 +1,8 @@
 # ============================================
 #   Setting
 # ============================================
-openapi: "3.1.0"
+
+openapi: 3.0.1
 info:
   title: Notes Page
   description: |-
@@ -43,7 +44,10 @@ paths:
       responses:
         "200":
           description: Successful operation
-
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/serverMessage"
         "500":
           description: Error occurred when displaying index.html
           content:
@@ -69,7 +73,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/submittedNotes"
+                  $ref: "#/components/schemas/notes"
         "500":
           description: Error occurred when displaying displaying all notes.
           content:
@@ -96,7 +100,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/serverMessage"
+                $ref: "#/components/schemas/postNotes"
 
         "400":
           description: Notes field is empty
@@ -115,7 +119,7 @@ paths:
       tags:
         - Notes
       summary: Deletes all notes
-      description: Deletes aall entries within our mongoDB when you select this option on the index.html page
+      description: Deletes all entries within our mongoDB when you select this option on the index.html page
       operationId: delAllNotes
       responses:
         "200":
@@ -251,13 +255,13 @@ components:
       properties:
         _id:
           type: integer
-          examples: [0]
+          # examples: [0]
         date:
           type: string
-          examples: [Thu Oct 05 2023 13:56:18 GMT+0100 (British Summer Time)]
+          # examples: ["Thu Oct 05 2023 13:56:18 GMT+0100 (British Summer Time)"]
         notes:
           type: string
-          examples: [This is my first note!]
+          # examples: ["This is my first note!"]
     notes:
       required:
         - notes
@@ -265,7 +269,20 @@ components:
       properties:
         notes:
           type: string
-          examples: [This is an note!]
+          # examples: ["This is an note!"]
+
+    postNotes:
+      required:
+        - message
+        - id
+      type: object
+      properties:
+        message:
+          type: string
+          # examples: ["This is an note!"]
+        id:
+          type: integer
+
     serverMessage:
       type: object
       properties:

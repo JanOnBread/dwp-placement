@@ -1,69 +1,63 @@
 const notesService = require("./notes-service");
 
-// Setting up Express server
+// Getting required modules
 const express = require("express");
 const cors = require("cors");
 const app = express();
 const path = require("path");
+const swaggerUi = require("swagger-ui-express");
+const fs = require("fs");
+const YAML = require("yaml");
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+const port = 3002;
+const url = "http://localhost:" + port;
 
 app.use(
   cors({
     credentials: true,
-    orgin: ["https://editor-next.swagger.io/", "https://app.swaggerhub.com"],
+    origin: url,
   })
 );
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// const cors = {
-//   orgin: [ "https://editor-next.swagger.io/","https://app.swaggerhub.com"]
-// }
-// app.use(function (req, res, next) {
-//   res.header(
-//     "Access-Control-Allow-Origin",
-
-//   );
-//   res.header("Access-Control-Allow-Credentials", true);
-//   next();
-// });
-
-const port = 3002;
-const url = "https://localhost:" + port;
-
-//===========================================
 
 app.listen(port);
 console.log("The server is running at " + url);
+console.log("Open API address:" + url + "/openapi");
+//===========================================
 
-//******
+// OPEN API
 
-//Open API stuff
 const OpenApiValidator = require("express-openapi-validator");
+const file = fs.readFileSync("./openapi.yaml", "utf8");
+const swaggerDocument = YAML.parse(file);
+
+// INSTALLING MIDDLEWARE
 
 app.use(
   OpenApiValidator.middleware({
     ignoreUndocumented: true,
-    apiSpec: "openapi.yaml",
+    apiSpec: swaggerDocument,
     validateRequests: true, // (default)
     validateResponses: true, // false by default
   })
 );
 
-// installing the middleware
+// SHOW VALIDATOR PAGE
+app.use("/openapi", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 //----------------------------------------------------
 //  GET  HTML PAGE
 app.use(express.static(path.join(__dirname)));
 
 app.get("/", async (req, res) => {
   try {
-    // this line under is not showing...???
-    console.log("a get request was made: retrieving index.html page");
     return res
       .status(200)
-      .sendFile(__dirname + "/index.html")
       .json({
         message: "Index page is up!",
-      });
+      })
+      .sendFile(__dirname + "/index.html");
   } catch (error) {
     return res.status(500).json({
       message: "An error has occurred (⋟﹏⋞)",
@@ -209,6 +203,8 @@ app.delete("/notes/", async (req, res) => {
 });
 
 //======================================================
+
+// Error messenger handler
 app.use((err, req, res, next) => {
   // format errors
   res.status(err.status || 500).json({
