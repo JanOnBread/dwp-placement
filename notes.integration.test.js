@@ -106,6 +106,7 @@ describe("TEST FOR UPDATE ", () => {
     );
 
     const resultUpdateNewNote = await request(app).get("/notes/" + id);
+
     expect(resultUpdateNewNote.body.notes).toBe("this is a update");
   });
 });
@@ -116,6 +117,7 @@ describe("TEST FOR UPDATE ", () => {
 describe("TEST FOR DELETE ", () => {
   it("/notes/{id} should delete notes based on an id", async () => {
     resultDelId = await request(app).delete("/notes/" + id);
+
     expect(resultDelId.status).toBe(200);
     expect(resultDelId.body.message).toBe(
       "this note has been deleted successfully deleted ٩(`･ω･´)و"

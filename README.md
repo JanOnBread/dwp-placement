@@ -10,7 +10,6 @@ Technologies used within this project:
 
 - [Express](https://expressjs.com/) : Web framework for node js
 - [SuperTest](https://www.npmjs.com/package/supertest) : Used to HTTP/integrating testing
-- [MongoDB](https://www.mongodb.com/) : A database used to store our data/notes
 
 Key skills demonstrated :
 
@@ -18,7 +17,6 @@ Key skills demonstrated :
 - Creating a interactive page with HTML and CSS
 - Writing integration tests with SuperTest
 - Creating a local server using Express to "talk to" our database
-- Setting up and using a database using MongoDB
 - Applying HTTP methods
 - Writing an affective readme page and a open api document
 
@@ -27,9 +25,6 @@ Key skills demonstrated :
 ## Installing and Setup
 
 ### _Locally_
-
-> [!IMPORTANT]
-> Before setting up locally, you will need a Mongo account.
 
 1. **First, clone this repository into your local directory.**
    There are many ways of doing this, most of which can be found in "\<Code\>" on Github when you view the repository under the "\<\> Code" tab.
@@ -40,23 +35,14 @@ Key skills demonstrated :
    git clone https://github.com/JanOnBread/Notes.git
    ```
 
-1. **Add your MongoDB server**
-   Locate the file "note-service.js" and, near the top, replace 'dataBaseLoc' with the url of your MongoDB.
-   It should look like the following with your own url.
-
-   ```javascript
-   const dataBaseLoc =
-     "mongodb+srv://<username>:<password>@<host>/?retryWrites=true&w=majority";
-   ```
-
 1. **Running the code**
    Finally run the commnand,
 
    ```cmd
-   npm run notes.js
+   npm start
    ```
 
-   and the page should run locally on `http://localhost:3002`.Terminate running code from the console to stop the local server.
+   and the page should run locally on `http://localhost:3002`. To stop, terminate the server (ie `ctl+c` on mac)
 
 ### _Externally_
 

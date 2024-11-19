@@ -154,7 +154,6 @@ async function delNotes() {
 
   if (delIdBox.checked == true) {
     id = delByIdInput.value;
-    console.log(id);
   } else {
     if (
       confirm(

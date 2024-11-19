@@ -1,36 +1,4 @@
-// Setting up MongoDB (our Database)
-const mongoose = require("mongoose");
-require("dotenv").config();
-
-// local one
-const username = process.env.MONGO_USER;
-const pass = process.env.MONGO_PASS;
-const host = process.env.MONGO_HOST;
-const uri = process.env.MONGODB_URI;
-
-const dataBaseLoc = uri;
-
-mongoose
-  .connect(dataBaseLoc, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Our database is connected");
-  })
-  .catch((error) => {
-    console.log("A database was not set up");
-    console.error(error);
-  });
-
-// Defining a Schema
-const noteSchema = {
-  _id: Number, // auto-generated
-  date: String, // auto-generated
-  notes: String, // custom imputed (body),"Today I learnt that ..."
-};
-// Defining our model
-const Note = mongoose.model("Note", noteSchema);
+let database = {};
 
 //=====================================================
 
@@ -40,21 +8,20 @@ const Note = mongoose.model("Note", noteSchema);
 
 async function createNewNote(req) {
   //generating new id
-  const maxSchemas = await Note.findOne().sort({ _id: -1 }).exec();
-  const id = maxSchemas === null ? 0 : maxSchemas._id + 1;
+  const maxSchemas = Object.keys(database).length;
+  const id = maxSchemas === 0 ? 0 : maxSchemas;
 
-  // // getting current data and time
+  // getting current data and time
   const date = String(new Date());
-
-  // Adding requests to schema
-  const document = new Note({
+  const idString = id.toString();
+  // Add note to our database
+  database[idString] = {
     _id: id,
     date: date,
     notes: req.body.notes,
-  });
+  };
 
   // Saving our new note
-  await document.save();
   const result = {
     message: "You have added a new note ( ´∀｀)b",
     id,
@@ -68,7 +35,7 @@ async function createNewNote(req) {
 // GET
 
 async function getAllNotes() {
-  return await Note.find({});
+  //return await Note.find({});
 }
 
 // Function to find a note given an Id + error catch it
@@ -76,10 +43,7 @@ async function getAllNotes() {
 async function getById(res, id) {
   // adding a try catch to test if a note, given an Id, exists
   try {
-    // console.log(
-    //   "console log at getById function " + (await Note.findById(id).exec())
-    // );
-    return await Note.findById(id).exec();
+    return database[id.toString()]; //Note.findById(id).exec();
   } catch (error) {
     return res
       .status(500)
@@ -94,25 +58,30 @@ async function getById(res, id) {
 // PATCH
 
 async function updateById(id, notes) {
-  await Note.findByIdAndUpdate(id, notes);
+  // getting current data and time
+  const date = String(new Date());
+
+  const idString = id.toString();
+  return (database[idString] = {
+    _id: id,
+    date: date,
+    notes: notes,
+  });
 }
 
 //=====================================================
 
 // DELETE
 
-async function delById(req) {
-  await Note.findByIdAndRemove(req).exec();
+async function delById(idAsString) {
+  delete database[idAsString];
 }
 
 async function deleteAllNotes() {
-  await Note.deleteMany({}).exec();
+  database = {};
 }
 
 //-----------------------------------------------
-//getById
-//getAll
-//updateOne
 
 module.exports = {
   createNewNote,

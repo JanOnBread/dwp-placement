@@ -82,8 +82,6 @@ app.get("/", async (req, res) => {
 app.post("/notes", async (req, res) => {
   // return an error if the note field is empty
 
-  console.log("line 29 in the post request", req.body);
-
   if (req.body.notes === undefined || req.body.notes.length == 0) {
     return res.status(400).json({
       message: "The note field is empty so a note was not sent (つ﹏<。)",
@@ -123,7 +121,7 @@ app.get("/notes", async (req, res) => {
 app.get("/notes/:_id", async (req, res) => {
   const noteById = await notesService.getById(res, req.params._id);
 
-  if (noteById === null) {
+  if (noteById === undefined) {
     return res
       .status(404)
       .json({ message: "There is no entry with this id ( ＞Д＜ )ゝ" });
@@ -139,7 +137,7 @@ app.get("/notes/:_id", async (req, res) => {
 app.patch("/notes/:_id/", async (req, res) => {
   const noteById = await notesService.getById(res, req.params._id);
 
-  if (noteById === null) {
+  if (noteById === undefined) {
     return res
       .status(404)
       .json({ message: "There is no entry with this id ( ＞Д＜ )ゝ " });
@@ -150,9 +148,7 @@ app.patch("/notes/:_id/", async (req, res) => {
       });
     }
     try {
-      await notesService.updateById(req.params._id, {
-        notes: req.body.notes,
-      });
+      await notesService.updateById(Number(req.params._id), req.body.notes);
       return res
         .status(200)
         .json({ message: "this note has been updated successfully ٩(`･ω･´)و" });
@@ -172,13 +168,13 @@ app.delete("/notes/:_id", async (req, res) => {
   //const noteById = await Note.findById(req.params).exec();
   const noteById = await notesService.getById(res, req.params._id);
 
-  if (noteById === null) {
+  if (noteById === undefined) {
     return res
       .status(404)
       .json({ message: "There is no entry with this id ( ＞Д＜ )ゝ " });
   } else {
     try {
-      await notesService.delById(req.params);
+      await notesService.delById(req.params._id);
       return res.status(200).json({
         message: "this note has been deleted successfully deleted ٩(`･ω･´)و",
       });
